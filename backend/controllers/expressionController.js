@@ -55,13 +55,21 @@ exports.sendExpression = catchAsyncErrors(async (req, res, next) => {
 // Start Expression of user   =>   /api/v1/startexpression
 exports.startExpression = catchAsyncErrors(async (req, res, next) => {
 
-  const expression = await Expression.find({sessioncour: req.params.id, user: req.user.id, dateTimeStopRecording: null})
-  if (expression.length >0) {
-    return next(new ErrorHandler(`You must stop all sessions open to start it ${expression} `, 404));
+  let success = false
+  // const expression = await Expression.find({sessioncour: req.params.id, user: req.user.id, dateTimeStopRecording: null})
+  const expressions = await Expression.find({user: req.user.id, dateTimeStopRecording: null})
+  if (expressions.length >0) {
+    expressions.map(expression => (
+      ( expression.sessioncour === req.params.id) && (success = true) 
+
+    ))
   }
+  
+  // if(!success)
+  //   return next(new ErrorHandler(`You must stop all sessions open to start it ${expression} `, 404));
 
   res.status(201).json({
-    success: true
+    success: success
   })
 
 })

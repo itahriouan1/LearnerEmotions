@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Chart } from "react-google-charts";
 import * as faceapi from 'face-api.js'
 import '../../App.css';
+import { startExpression } from '../../actions/expressionActions'
 
 
 const Expressionrecord = () => {
@@ -32,6 +33,9 @@ const Expressionrecord = () => {
 	const [surprised, setSurprised] = useState(0)
 
 	const [idExpression, setIdExpression] = useState()
+
+  // const { success, errorstartexpresion = error } = useSelector(state => state.startExpression)
+
 
 
 	useEffect(() => {
@@ -120,19 +124,20 @@ const Expressionrecord = () => {
 		return () => clearInterval(interval)
 	}, [playing])
 
+	const startTheExpression = (id) => {
+		// dispatch(startExpression(id));
+		// setRef(ref => ref + 5)
+
+	
+	};
+
+	
 	return (
 		<div className="app">
 			<div>{time}</div>
-			<button
-        onClick={()=>setPlaying(true)}
-      >
-        Start interval
-      </button>
-			<button
-        onClick={()=>setPlaying(false)}
-      >
-        stop interval
-      </button>
+			<button onClick={()=>setPlaying(true)} > Start interval </button>
+			<button  onClick={()=>setPlaying(false)}  > stop interval </button>
+			<button  onClick={()=>setPlaying(false)}  > stop interval zith patsh </button>
 			<div className="app__container">
 				<video 
 					ref={videoRef} 
@@ -154,26 +159,7 @@ const Expressionrecord = () => {
 				></video> */}
 			</div>
 			<div className="app__input">
-			<button
-        onClick={()=>setPlaying(true)}
-      >
-        Start interval
-      </button>
-			<button
-        onClick={()=>setPlaying(false)}
-      >
-        stop interval
-      </button>
-			<button
-        onClick={()=>setPlaying(true)}
-      >
-        resum interval
-      </button>
-			<button
-        onClick={()=>setTime(0)}
-      >
-        reset interval
-      </button>
+			
 
 			</div>
 			<div>

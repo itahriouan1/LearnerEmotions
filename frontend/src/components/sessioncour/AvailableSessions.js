@@ -61,7 +61,6 @@ import AvailableSessionCard from './AvailableSessionCard'
 import { getSessioncoursAvailableStudent, clearErrors } from '../../actions/sessioncourActions'
 import { startExpression } from '../../actions/expressionActions'
 
-
 const useStyles = makeStyles((theme) =>({
   root: {
     width: 600,
@@ -114,6 +113,8 @@ const AvailableSessions = ({ match }) => {
   const [labelValueGroups,setLabelValueGroups]= useState([])
   const [typeSession, setTypeSession] = useState('tp')
 
+  const [expressionrecord, setExpressionrecord] = useState(0)
+
   const { loading, sessioncoursAvailable, count, error } = useSelector(state => state.sessioncoursAvailableStudent)
   const { success, errorstartexpresion = error } = useSelector(state => state.startExpression)
 
@@ -129,9 +130,9 @@ const AvailableSessions = ({ match }) => {
 
     dispatch(getSessioncoursAvailableStudent());
 
-    if(success){
-      history.push(`/expressionrecord`)
-    }
+    // if(success){
+    //   history.push(`/expressionrecord/${id}`)
+    // }
 
   }, [dispatch, alert, error, ref])
 
@@ -147,14 +148,12 @@ const AvailableSessions = ({ match }) => {
 	};
 
   const startTheExpression = (id) => {
-    console.log(id)
-    // const formData = new FormData();
-    // formData.set('id', id);
-    dispatch(startExpression(id));
-		setInterval(() => {
-      setRef(ref => ref + 5)
+    history.push(`/expressionrecord/${id}`)
 
-		}, 2000)
+    // setExpressionrecord(id)
+    // dispatch(startExpression(id));
+    // setRef(ref => ref + 5)
+
 
   };
 
