@@ -148,7 +148,7 @@ export default function Header({ children }) {
     { 
       text: 'History Sessions', 
       icon: <History color="secondary" />, 
-      path: '/HistorySessions' 
+      path: '/historySessions' 
     },
   ];
   const noUserMenuItems = [

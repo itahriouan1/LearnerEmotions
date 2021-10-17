@@ -20,6 +20,8 @@ import {
   sessioncourReducer,
   newSessioncourReducer,
   sessioncoursAvailableStudentReducer,
+  sessioncoursHistoryStudentReducer,
+  infoSessioncourReducer
  } from './reducers/sessioncourReducers'
 
 import {
@@ -27,7 +29,8 @@ import {
  } from './reducers/naturesessioncourReducers'
 
 import {
-  startExpressionReducer
+  startExpressionReducer,
+  sendExpressionReducer
  } from './reducers/expressionReducers'
 
 const reducer = combineReducers({
@@ -39,15 +42,21 @@ const reducer = combineReducers({
     allSessioncoursGroup: allSessioncourGroupReducer,
     userDetails: userDetailsReducer,
     forgotPassword: forgotPasswordReducer,
+
     groups:groupsReducer,
     groupDetails:groupDetailsReducer,
     newGroup:newGroupReducer,
+
     allMySessioncoursTeacher:allMySessioncoursTeacherReducer,
     naturesessioncourDetails:naturesessioncourDetailsReducer,
     sessioncour:sessioncourReducer,
     newSessioncour:newSessioncourReducer,
     sessioncoursAvailableStudent:sessioncoursAvailableStudentReducer,
-    startExpression:startExpressionReducer
+    sessioncoursHistoryStudent:sessioncoursHistoryStudentReducer,
+    infoSessioncour:infoSessioncourReducer,
+
+    startExpression:startExpressionReducer,
+    sendExpression:sendExpressionReducer
 
 })
 

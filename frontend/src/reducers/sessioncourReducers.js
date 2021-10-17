@@ -17,6 +17,15 @@ import {
   AVAILABLESESSIONCOURS_STUDENT_REQUEST,
   AVAILABLESESSIONCOURS_STUDENT_SUCCESS,
   AVAILABLESESSIONCOURS_STUDENT_FAIL,
+  HISTORYSESSIONCOURS_STUDENT_REQUEST,
+  HISTORYSESSIONCOURS_STUDENT_SUCCESS,
+  HISTORYSESSIONCOURS_STUDENT_FAIL,
+  INFOSESSIONCOUR_STUDENT_REQUEST,
+  INFOSESSIONCOUR_STUDENT_SUCCESS,
+  INFOSESSIONCOUR_STUDENT_FAIL,
+  SESSIONNOACTIVE_STUDENT_TEACHER_REQUEST,
+  SESSIONNOACTIVE_STUDENT_TEACHER_SUCCESS,
+  SESSIONNOACTIVE_STUDENT_TEACHER_FAIL,
   CLEAR_ERRORS
 } from '../constants/sessioncourConstants'
 
@@ -126,6 +135,41 @@ export const sessioncoursAvailableStudentReducer = (state = { sessioncoursAvaila
     }
 }
 
+export const sessioncoursHistoryStudentReducer = (state = { sessioncoursHistory: [] }, action) => {
+    switch (action.type) {
+  
+        case HISTORYSESSIONCOURS_STUDENT_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+  
+        case HISTORYSESSIONCOURS_STUDENT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                sessioncoursHistory: action.payload,
+                
+            }
+  
+        case HISTORYSESSIONCOURS_STUDENT_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+  
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+  
+        default:
+            return state;
+    }
+}
+
 
 export const sessioncourReducer = (state = {}, action) => {
     switch (action.type) {
@@ -168,6 +212,77 @@ export const sessioncourReducer = (state = {}, action) => {
     }
 }
 
+
+export const infoSessioncourReducer = (state = {}, action) => {
+    switch (action.type) {
+
+        case INFOSESSIONCOUR_STUDENT_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+
+        case INFOSESSIONCOUR_STUDENT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                sessioncour: action.payload.sessioncour[0],
+                expression:action.payload.expression
+            }
+
+
+        case INFOSESSIONCOUR_STUDENT_FAIL:
+            return {
+                ...state,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state
+    }
+}
+
+
+// export const sessionnoactivestudentteacherReducer = (state = {}, action) => {
+//     switch (action.type) {
+
+//         case SESSIONNOACTIVE_STUDENT_TEACHER_REQUEST:
+//             return {
+//                 ...state,
+//                 loading: true
+//             }
+
+//         case SESSIONNOACTIVE_STUDENT_TEACHER_SUCCESS:
+//             return {
+//                 ...state,
+//                 loading: false,
+//                 sessioncour: action.payload.sessioncour[0],
+//                 expression:action.payload.expression
+//             }
+
+
+//         case SESSIONNOACTIVE_STUDENT_TEACHER_FAIL:
+//             return {
+//                 ...state,
+//                 error: action.payload
+//             }
+
+//         case CLEAR_ERRORS:
+//             return {
+//                 ...state,
+//                 error: null
+//             }
+
+//         default:
+//             return state
+//     }
+// }
 
 export const newSessioncourReducer = (state = { sessiongroup: {} }, action) => {
     switch (action.type) {

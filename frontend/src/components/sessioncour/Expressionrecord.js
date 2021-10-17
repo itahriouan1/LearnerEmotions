@@ -2,11 +2,16 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Chart } from "react-google-charts";
 import * as faceapi from 'face-api.js'
 import '../../App.css';
-import { startExpression } from '../../actions/expressionActions'
+
+import { useAlert } from 'react-alert';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { startExpression, sendExpression, clearErrors } from '../../actions/expressionActions'
 
 
-const Expressionrecord = () => {
 
+const Expressionrecord = ({ match, history }) => {
+	console.log(match.params)
   const [playing, setPlaying] = useState(false);
 
   const [createdBy,setCreatedBy] = useState("")
@@ -32,9 +37,19 @@ const Expressionrecord = () => {
 	const [disgusted, setDisgusted] = useState(0)
 	const [surprised, setSurprised] = useState(0)
 
+	const [dataexpressions, setDataexpressions] = useState({})
+
+	let dataexpression 
+
+  const [matchParamsId, setMatchParamsId] = useState(match.params.id);
+
+	const dispatch = useDispatch();
+  const alert = useAlert();
+
 	const [idExpression, setIdExpression] = useState()
 
   // const { success, errorstartexpresion = error } = useSelector(state => state.startExpression)
+  const { loading ,expressionUpdated, error } = useSelector(state => state.sendExpression)
 
 
 
@@ -55,6 +70,7 @@ const Expressionrecord = () => {
 
   useEffect(() => {
 		let interval = null
+		let intervalSendExpression = null
 		if(playing){
 			navigator.mediaDevices.getUserMedia(
 				{ video: {} })
@@ -79,7 +95,7 @@ const Expressionrecord = () => {
 								faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections)
 								faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections)
 								// console.log(detections.expressions)
-				
+
 								//calculer l'expressions
 								setNeutral(neutral => neutral + detections.expressions.neutral)
 								setHappy(happy => happy + detections.expressions.happy)
@@ -88,12 +104,73 @@ const Expressionrecord = () => {
 								setFearful(fearful => fearful + detections.expressions.fearful)
 								setDisgusted(disgusted => disgusted + detections.expressions.disgusted)
 								setSurprised(surprised => surprised + detections.expressions.surprised)
-								// console.log(neutral)		
+								// console.log(neutral)
+								// dataexpression = { 
+								// 	"surprised" : surprised,
+								// 	"disgusted" : disgusted,
+								// 	"fearful" : fearful,
+								// 	"sad" : sad,
+								// 	"angry" : angry,
+								// 	"happy" : happy,
+								// 	"neutral" : neutral,
+								// 	"natureSession" : null ,
+								// 	"user" : null,
+								// 	"sessioncour": matchParamsId,
+								// 	"dateTimeStopRecording" : null
+								//  }
 							}
 						}
 
 					}, 1000)
-				
+
+					//send Expression data
+					intervalSendExpression = setInterval(() => {
+						// setDataexpressions(perDataexpressions => 
+						// 	({
+						// 	"surprised" : surprised,
+						// 	"disgusted" : disgusted,
+						// 	"fearful" : fearful,
+						// 	"sad" : sad,
+						// 	"angry" : angry,
+						// 	"happy" : happy,
+						// 	"neutral" : neutral,
+						// 	"natureSession" : null ,
+						// 	"user" : null,
+						// 	"sessioncour": matchParamsId,
+						// 	"dateTimeStopRecording" : null
+						// }))
+    				dataexpression = {
+							"surprised" : surprised,
+							"disgusted" : disgusted,
+							"fearful" : fearful,
+							"sad" : sad,
+							"angry" : angry,
+							"happy" : happy,
+							"neutral" : neutral,
+							"natureSession" : null ,
+							"user" : null,
+							"sessioncour": matchParamsId,
+							"dateTimeStopRecording" : null
+						 }
+
+						dispatch(sendExpression({
+							"surprised" : surprised,
+							"disgusted" : disgusted,
+							"fearful" : fearful,
+							"sad" : sad,
+							"angry" : angry,
+							"happy" : happy,
+							"neutral" : neutral,
+							"natureSession" : null ,
+							"user" : null,
+							"sessioncour": matchParamsId,
+							"dateTimeStopRecording" : null
+						 }));
+
+					}, 10000)
+
+
+
 			// navigator.getUserMedia(
 			// 	{
 			// 		video: true,
@@ -111,9 +188,12 @@ const Expressionrecord = () => {
 			// 	setTime(prevTime => prevTime + 1)
 			// 	console.log('ff')
 			// }, 1000)
-			
+
 		}else{
 			clearInterval(interval)
+			console.log('ffff',typeof clearInterval(interval))
+			clearInterval(intervalSendExpression)
+			// const a = ()=> clearInterval(intervalSendExpression)
 			console.log('jj')
 			let video = document.getElementsByClassName('app__videoFeed')[0];
 			if(videoRef.current.srcObject){
@@ -121,17 +201,17 @@ const Expressionrecord = () => {
 			}
 		}
 
-		return () => clearInterval(interval)
+		return () => {clearInterval(interval);clearInterval(intervalSendExpression)}
 	}, [playing])
 
 	const startTheExpression = (id) => {
 		// dispatch(startExpression(id));
 		// setRef(ref => ref + 5)
 
-	
+
 	};
 
-	
+
 	return (
 		<div className="app">
 			<div>{time}</div>
@@ -139,14 +219,14 @@ const Expressionrecord = () => {
 			<button  onClick={()=>setPlaying(false)}  > stop interval </button>
 			<button  onClick={()=>setPlaying(false)}  > stop interval zith patsh </button>
 			<div className="app__container">
-				<video 
-					ref={videoRef} 
-					width={WIDTH} 
-					height={HEIGHT} 
-					muted 
+				<video
+					ref={videoRef}
+					width={WIDTH}
+					height={HEIGHT}
+					muted
 					autoPlay
 					className="app__videoFeed"
-					// onPlay={handleVideoOnPlay} 
+					// onPlay={handleVideoOnPlay}
 				/>
 				<canvas ref={canvasRef} className="position-absolut" />
 				<div id="piechart"></div>
@@ -159,7 +239,7 @@ const Expressionrecord = () => {
 				></video> */}
 			</div>
 			<div className="app__input">
-			
+
 
 			</div>
 			<div>

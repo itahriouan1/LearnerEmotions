@@ -10,7 +10,9 @@ const {
     deleteSessioncour,
     getSessioncoursGroup,
     updateSessioncourStatus,
-    sessioncoursAvailable
+    sessioncoursAvailable,
+    sessioncoursHistory,
+    getInfoSessioncourStudent
     
 
 } = require('../controllers/sessioncourController')
@@ -39,8 +41,10 @@ router.route('/admin/sessiongroup').get(isAuthenticatedUser, authorizeRoles('adm
 
 // user route
 router.route('/groupactivesessioncour').get(isAuthenticatedUser, authorizeRoles('user','admin'), activeSessioncoursOfAGroup);
-router.route('/availablesessioncours').get(isAuthenticatedUser,sessioncoursAvailable);
+router.route('/availablesessioncours').get(isAuthenticatedUser, authorizeRoles('user'),sessioncoursAvailable);
+router.route('/historysessioncours').get(isAuthenticatedUser, authorizeRoles('user'),sessioncoursHistory);
 router.route('/sessioncoursgroup/:id').get(isAuthenticatedUser, authorizeRoles('teacher','admin'),getSessioncoursGroup);
+router.route('/infosessioncourstudent/:id').get(isAuthenticatedUser, authorizeRoles('user'),getInfoSessioncourStudent);
 
 
 

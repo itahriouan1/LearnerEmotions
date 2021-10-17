@@ -2,6 +2,8 @@ const Group = require('../models/group')
 const User = require('../models/user')
 const Sessioncour = require('../models/sessioncour')
 const Naturesessioncour = require('../models/natureSessioncour')
+const Expression = require('../models/expression')
+
 
 
 
@@ -98,6 +100,25 @@ exports.getAllSessionCours = catchAsyncErrors(async (req, res, next) => {
 
 })
 
+// Get Info sessioncours   =>   /api/v1/infosessioncourstudent
+exports.getInfoSessioncourStudent = catchAsyncErrors(async (req, res, next) => {
+  
+  const sessioncour = await Sessioncour.find({_id : req.params.id});
+  if(!sessioncour){
+    return next(new ErrorHandler('Session not found', 404));
+
+  }
+
+  let expression = null
+  expression = await Expression.find({user:req.user.id, sessioncour:req.params.id})
+
+  res.status(200).json({
+      sessioncour,
+      expression
+  })
+
+})
+
 
 // Get Sessioncours of group    =>   /api/v1/sessioncourgroup/:id
 exports.getSessioncoursGroup = catchAsyncErrors(async (req, res, next) => {
@@ -178,6 +199,37 @@ exports.sessioncoursAvailable= catchAsyncErrors(async (req, res, next) => {
       success: true,
       count : sessioncoursActive.length,
       sessioncoursActive
+  })
+
+})
+
+// Get History Sessioncours   =>   /api/v1/historysessioncours
+exports.sessioncoursHistory = catchAsyncErrors(async (req, res, next) => {
+
+  let sessioncoursNoActive = []
+  const groups = await Group.find({students:{_id : req.user.id}})
+  console.log(groups)
+  const a = await Promise.all(groups.map(async (group)=>(
+    await Sessioncour.find({groups:{_id : group._id},status:2})
+    .then((sessioncour) => {
+      console.log(group)
+      console.log(group._id)
+      console.log(sessioncour)
+      if(Object.keys(sessioncour).length > 0){
+        sessioncour.map( s =>(
+          sessioncoursNoActive.push(s)
+        ))
+        // sessioncoursNoActive.push(sessioncour[0])
+
+      }
+    })
+
+  )))
+  // sessioncoursActive = await Sessioncour.find({status:1});
+  res.status(200).json({
+      success: true,
+      count : sessioncoursNoActive.length,
+      sessioncoursNoActive
   })
 
 })

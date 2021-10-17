@@ -5,6 +5,12 @@ import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography';
 
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
 import { useAlert } from 'react-alert'
 
 import Loader from '../layout/Loader'
@@ -13,6 +19,7 @@ import { Avatar, Container } from '@material-ui/core'
 
 
 import { getUserDetailsRELATION, clearErrors } from '../../actions/userActions';
+// import { getSessionsNoActiveStudentTeacher } from '../../actions/sessioncourActions';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -36,7 +43,14 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width:250,
     height:250
-  }
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    Width: 50,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 
 }));
 
@@ -46,6 +60,8 @@ const StuentProfile = ({match}) => {
 
   const dispatch = useDispatch();
   const alert = useAlert();
+
+  const [session, setSession] = React.useState('');
 
   const { user } = useSelector(state => state.auth)
   const {stuentDetails, error, loading } = useSelector((state) => state.userDetails);
@@ -62,6 +78,10 @@ const StuentProfile = ({match}) => {
     }
 
   }, [dispatch, alert, error,userId])
+
+  const handleChange = (event) => {
+    setSession(event.target.value);
+  };
 
   return (
     <Fragment>
@@ -136,7 +156,22 @@ const StuentProfile = ({match}) => {
               </Grid>
             </Grid>
           </div>
+          <FormControl style={{width: 200}} className={classes.formControl}>
+            <InputLabel id="demo-simple-select-label">Select Session</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={session}
+              onChange={handleChange}
+              autoWidth
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
         </div>
+        
       )}
     </Fragment>
   )

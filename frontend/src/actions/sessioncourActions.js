@@ -17,6 +17,16 @@ import {
     AVAILABLESESSIONCOURS_STUDENT_REQUEST,
     AVAILABLESESSIONCOURS_STUDENT_SUCCESS,
     AVAILABLESESSIONCOURS_STUDENT_FAIL,
+    HISTORYSESSIONCOURS_STUDENT_REQUEST,
+    HISTORYSESSIONCOURS_STUDENT_SUCCESS,
+    HISTORYSESSIONCOURS_STUDENT_FAIL,
+    INFOSESSIONCOUR_STUDENT_REQUEST,
+    INFOSESSIONCOUR_STUDENT_SUCCESS,
+    INFOSESSIONCOUR_STUDENT_FAIL,
+    SESSIONNOACTIVE_STUDENT_TEACHER_REQUEST,
+    SESSIONNOACTIVE_STUDENT_TEACHER_SUCCESS,
+    SESSIONNOACTIVE_STUDENT_TEACHER_FAIL,
+    
     CLEAR_ERRORS
 } from '../constants/sessioncourConstants'
 
@@ -140,8 +150,78 @@ export const getSessioncoursAvailableStudent = () => async (dispatch) => {
             payload: error.response.data.message
         })
     }
-  }
+}
+
+// Get sessioncoursHistory Student
+export const getSessioncoursHistoryStudent = () => async (dispatch) => {
+    try {
   
+        dispatch({ type: HISTORYSESSIONCOURS_STUDENT_REQUEST })
+  
+        let link = `/api/v1/historysessioncours`
+  
+        const { data } = await axios.get(link)
+  
+        dispatch({
+            type: HISTORYSESSIONCOURS_STUDENT_SUCCESS,
+            payload: data
+        })
+  
+    } catch (error) {
+        dispatch({
+            type: HISTORYSESSIONCOURS_STUDENT_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+// Get sessioncoursHistory Student
+export const getInfoSessioncourStudent = (id) => async (dispatch) => {
+    try {
+  
+        dispatch({ type: INFOSESSIONCOUR_STUDENT_REQUEST })
+  
+        let link = `/api/v1/infosessioncourstudent/${id}`
+  
+        const { data } = await axios.get(link)
+  
+        dispatch({
+            type: INFOSESSIONCOUR_STUDENT_SUCCESS,
+            payload: data
+        })
+  
+    } catch (error) {
+        dispatch({
+            type: INFOSESSIONCOUR_STUDENT_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+// Get sessioncoursHistory Student
+export const getSessionsNoActiveStudentTeacher = (id) => async (dispatch) => {
+    try {
+  
+        dispatch({ type: SESSIONNOACTIVE_STUDENT_TEACHER_REQUEST })
+  
+        let link = `/api/v1/sessionnoactivestudentteacher/${id}`
+  
+        const { data } = await axios.get(link)
+  
+        dispatch({
+            type: SESSIONNOACTIVE_STUDENT_TEACHER_SUCCESS,
+            payload: data
+        })
+  
+    } catch (error) {
+        dispatch({
+            type: SESSIONNOACTIVE_STUDENT_TEACHER_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({
