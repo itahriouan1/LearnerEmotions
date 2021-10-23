@@ -249,40 +249,42 @@ export const infoSessioncourReducer = (state = {}, action) => {
 }
 
 
-// export const sessionnoactivestudentteacherReducer = (state = {}, action) => {
-//     switch (action.type) {
+export const sessionnoactivestudentteacherReducer = (state = {}, action) => {
+    switch (action.type) {
 
-//         case SESSIONNOACTIVE_STUDENT_TEACHER_REQUEST:
-//             return {
-//                 ...state,
-//                 loading: true
-//             }
+        case SESSIONNOACTIVE_STUDENT_TEACHER_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
 
-//         case SESSIONNOACTIVE_STUDENT_TEACHER_SUCCESS:
-//             return {
-//                 ...state,
-//                 loading: false,
-//                 sessioncour: action.payload.sessioncour[0],
-//                 expression:action.payload.expression
-//             }
+        case SESSIONNOACTIVE_STUDENT_TEACHER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                count:action.payload.count,
+                sessioncoursNoActiveStudentTeacher: action.payload.sessioncoursNoActiveStudentTeacher,
+
+                
+            }
 
 
-//         case SESSIONNOACTIVE_STUDENT_TEACHER_FAIL:
-//             return {
-//                 ...state,
-//                 error: action.payload
-//             }
+        case SESSIONNOACTIVE_STUDENT_TEACHER_FAIL:
+            return {
+                ...state,
+                error: action.payload
+            }
 
-//         case CLEAR_ERRORS:
-//             return {
-//                 ...state,
-//                 error: null
-//             }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
 
-//         default:
-//             return state
-//     }
-// }
+        default:
+            return state
+    }
+}
 
 export const newSessioncourReducer = (state = { sessiongroup: {} }, action) => {
     switch (action.type) {

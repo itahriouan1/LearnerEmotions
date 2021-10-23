@@ -455,17 +455,22 @@ const GroupDetails = ({ match, history }) => {
                       className={classes.btn}
                       startIcon={<AddCircleOutlineOutlinedIcon />}
                       onClick={()=>{
-                        history.push('/group/new')
+                        history.push('/sessionscour')
                       }}
                     >
                     Add Session
                     </Button>
                   </div>
+
+
+
+
+
                   <Typography inline variant="body1" align="left" style={{marginTop:'12px'}}>Liste Sessions</Typography>                  
                   <Paper className={classes.root}>
                     <MenuList>
                       {sessioncours && sessioncours.map((sessioncour) => (
-                        <Link to={`/student/${sessioncour._id}`} className={classes.link}>
+                        <Link to={`/sessioninfo/${sessioncour._id}`} className={classes.link}>
                           <MenuItem>
                               <ListItemIcon>
                                 <PeopleAltOutlinedIcon fontSize="small" />

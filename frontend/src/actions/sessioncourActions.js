@@ -175,7 +175,7 @@ export const getSessioncoursHistoryStudent = () => async (dispatch) => {
     }
 }
 
-// Get sessioncoursHistory Student
+// Get InfoSessioncourStudent Student
 export const getInfoSessioncourStudent = (id) => async (dispatch) => {
     try {
   
@@ -198,8 +198,7 @@ export const getInfoSessioncourStudent = (id) => async (dispatch) => {
     }
 }
 
-
-// Get sessioncoursHistory Student
+// Get SessionsNoActiveStudentTeacher Student
 export const getSessionsNoActiveStudentTeacher = (id) => async (dispatch) => {
     try {
   

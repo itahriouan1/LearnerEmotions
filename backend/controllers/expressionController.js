@@ -87,4 +87,26 @@ exports.startExpression = catchAsyncErrors(async (req, res, next) => {
   })
 
 })
+
+// Get Expression of student   =>   /api/v1/expressionsessionstudent
+exports.getExpressionSessionStudent = catchAsyncErrors(async (req, res, next) => {
+  
+  const sessioncour = await Sessioncour.find({_id : req.params.id});
+  if(!sessioncour){
+    return next(new ErrorHandler('Session not found', 404));
+
+  }
+
+  let expression = null
+  console.log(req.params.id)
+  console.log(req.params.studentid)
+  expression = await Expression.find({user: req.params.studentid, sessioncour: req.params.id})
+  console.log(expression)
+
+  res.status(200).json({
+      sessioncour,
+      expression
+  })
+
+})
   

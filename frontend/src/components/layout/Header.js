@@ -105,11 +105,11 @@ export default function Header({ children }) {
       icon: <PersonAdd color="secondary" />, 
       path: '/dashbord' 
     },
-    { 
-      text: 'My Sessions', 
-      icon: <SubjectOutlined color="secondary" />, 
-      path: '/' 
-    },
+    // { 
+    //   text: 'My Sessions', 
+    //   icon: <SubjectOutlined color="secondary" />, 
+    //   path: '/' 
+    // },
     { 
       text: 'Groupe', 
       icon: <GroupAdd color="secondary" />, 
@@ -123,11 +123,11 @@ export default function Header({ children }) {
     
   ];
   const teacherMenuItems = [
-    { 
-      text: 'My Sessions', 
-      icon: <SubjectOutlined color="secondary" />, 
-      path: '/' 
-    },
+    // { 
+    //   text: 'My Sessions', 
+    //   icon: <SubjectOutlined color="secondary" />, 
+    //   path: '/' 
+    // },
     { 
       text: 'Groupe', 
       icon: <GroupAdd color="secondary" />, 

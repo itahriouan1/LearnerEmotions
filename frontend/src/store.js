@@ -21,7 +21,8 @@ import {
   newSessioncourReducer,
   sessioncoursAvailableStudentReducer,
   sessioncoursHistoryStudentReducer,
-  infoSessioncourReducer
+  infoSessioncourReducer,
+  sessionnoactivestudentteacherReducer
  } from './reducers/sessioncourReducers'
 
 import {
@@ -30,33 +31,36 @@ import {
 
 import {
   startExpressionReducer,
-  sendExpressionReducer
+  sendExpressionReducer,
+  expressionStudentReducer
  } from './reducers/expressionReducers'
 
 const reducer = combineReducers({
    
-    auth: authReducer,
-    user: userReducer,
-    allUsers: allUsersReducer,
-    allUsersGroup: allUsersGroupReducer,
-    allSessioncoursGroup: allSessioncourGroupReducer,
-    userDetails: userDetailsReducer,
-    forgotPassword: forgotPasswordReducer,
+  auth: authReducer,
+  user: userReducer,
+  allUsers: allUsersReducer,
+  allUsersGroup: allUsersGroupReducer,
+  allSessioncoursGroup: allSessioncourGroupReducer,
+  userDetails: userDetailsReducer,
+  forgotPassword: forgotPasswordReducer,
 
-    groups:groupsReducer,
-    groupDetails:groupDetailsReducer,
-    newGroup:newGroupReducer,
+  groups:groupsReducer,
+  groupDetails:groupDetailsReducer,
+  newGroup:newGroupReducer,
 
-    allMySessioncoursTeacher:allMySessioncoursTeacherReducer,
-    naturesessioncourDetails:naturesessioncourDetailsReducer,
-    sessioncour:sessioncourReducer,
-    newSessioncour:newSessioncourReducer,
-    sessioncoursAvailableStudent:sessioncoursAvailableStudentReducer,
-    sessioncoursHistoryStudent:sessioncoursHistoryStudentReducer,
-    infoSessioncour:infoSessioncourReducer,
+  allMySessioncoursTeacher:allMySessioncoursTeacherReducer,
+  naturesessioncourDetails:naturesessioncourDetailsReducer,
+  sessioncour:sessioncourReducer,
+  newSessioncour:newSessioncourReducer,
+  sessioncoursAvailableStudent:sessioncoursAvailableStudentReducer,
+  sessioncoursHistoryStudent:sessioncoursHistoryStudentReducer,
+  infoSessioncour:infoSessioncourReducer,
+  sessionnoactivestudentteacher:sessionnoactivestudentteacherReducer,
 
-    startExpression:startExpressionReducer,
-    sendExpression:sendExpressionReducer
+  startExpression:startExpressionReducer,
+  sendExpression:sendExpressionReducer,
+  expressionStudent:expressionStudentReducer
 
 })
 

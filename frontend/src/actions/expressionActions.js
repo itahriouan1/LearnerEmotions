@@ -7,6 +7,9 @@ import {
   UPDATE_EXPRESSION_REQUEST,
   UPDATE_EXPRESSION_SUCCESS,
   UPDATE_EXPRESSION_FAIL,
+  EXPRESSION_STUDENT_REQUEST,
+  EXPRESSION_STUDENT_SUCCESS,
+  EXPRESSION_STUDENT_FAIL,
   CLEAR_ERRORS
 } from '../constants/expressionConstants'
 
@@ -58,7 +61,28 @@ export const sendExpression = (dataexpression) => async (dispatch) => {
   }
 }
 
+// Get ExpressionStudent Student
+export const getExpressionStudent = (id,studentid) => async (dispatch) => {
+  try {
 
+      dispatch({ type: EXPRESSION_STUDENT_REQUEST })
+
+      let link = `/api/v1/expressionsessionstudent/${id}/${studentid}`
+
+      const { data } = await axios.get(link)
+
+      dispatch({
+          type: EXPRESSION_STUDENT_SUCCESS,
+          payload: data
+      })
+
+  } catch (error) {
+      dispatch({
+          type: EXPRESSION_STUDENT_FAIL,
+          payload: error.response.data.message
+      })
+  }
+}
 
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {

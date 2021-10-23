@@ -17,9 +17,14 @@ import Loader from '../layout/Loader'
 import MetaData from '../layout/MetaData'
 import { Avatar, Container } from '@material-ui/core'
 
+import { Chart } from "react-google-charts";
+
 
 import { getUserDetailsRELATION, clearErrors } from '../../actions/userActions';
-// import { getSessionsNoActiveStudentTeacher } from '../../actions/sessioncourActions';
+import { getSessionsNoActiveStudentTeacher } from '../../actions/sessioncourActions';
+import { getExpressionStudent } from '../../actions/expressionActions';
+
+
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -65,12 +70,16 @@ const StuentProfile = ({match}) => {
 
   const { user } = useSelector(state => state.auth)
   const {stuentDetails, error, loading } = useSelector((state) => state.userDetails);
+  const {sessioncoursNoActiveStudentTeacher, } = useSelector((state) => state.sessionnoactivestudentteacher);
+  const { sessioncour, expression } = useSelector(state => state.expressionStudent)
+
 
   const userId = match.params.id;
 
   useEffect(() => {
     
     dispatch(getUserDetailsRELATION(userId))
+    dispatch(getSessionsNoActiveStudentTeacher(userId))
 
     if (error) {
       alert.error(error);
@@ -81,6 +90,9 @@ const StuentProfile = ({match}) => {
 
   const handleChange = (event) => {
     setSession(event.target.value);
+    console.log(session)
+    dispatch(getExpressionStudent(event.target.value, userId));
+
   };
 
   return (
@@ -161,15 +173,78 @@ const StuentProfile = ({match}) => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={session}
+              // value={session}
               onChange={handleChange}
               autoWidth
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+
+              {/* {getSessionsNoActiveStudentTeacher && getSessionsNoActiveStudentTeacher.sessioncoursNoActiveStudentTeacher.map((sessioncour)=>(
+                console.log(getSessionsNoActiveStudentTeacher)
+
+              ))} */}
+              {sessioncoursNoActiveStudentTeacher &&  sessioncoursNoActiveStudentTeacher.map((session)=>(
+                <MenuItem value={session._id}>{session.name}</MenuItem>
+
+              ))}
             </Select>
           </FormControl>
+
+          <Typography 
+            variant="h4" 
+            gutterBottom
+
+          >
+            Expression
+          </Typography>
+          {expression && expression.length > 0 ? (
+            expression.map(exp=>(
+              <div>
+                { ( exp.neutral == 0 && exp.happy == 0 && exp.sad == 0 && exp.angry == 0 && exp.fearful == 0 && exp.disgusted == 0 && exp.surprised == 0 ) ?
+                  (
+                    <Typography 
+                      variant="h7" 
+                      gutterBottom
+                    >
+                      No Expression
+                    </Typography>
+
+                  ):(
+                    <Chart
+                      width={'600px'}
+                      height={'400px'}
+                      chartType="PieChart"
+                      loader={<div>Loading Expression</div>}
+                      data={[
+                        ['Expression', 'Value-Expression'],
+                        ['neutral', exp.neutral],
+                        ['happy', exp.happy],
+                        ['sad', exp.sad],
+                        ['angry', exp.angry],
+                        ['fearful', exp.fearful],
+                        ['disgusted', exp.disgusted],
+                        ['surprised', exp.surprised]
+                      ]}
+                      options={{
+                        title: 'My Expressin in s',
+                        is3D: true,
+                        backgroundColor: '# EE82EE'
+                      }}
+                      rootProps={{ 'data-testid': '1' }}
+                    />
+                  )
+                }
+              </div>
+
+            ))
+          ):(
+            <Typography 
+              variant="h7" 
+              gutterBottom
+            >
+              No Expression
+            </Typography>
+          )}
+
         </div>
         
       )}

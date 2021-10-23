@@ -104,7 +104,7 @@ export default function SessionCard({statusSessioncour, session }) {
               {session.natureSession}
             </Avatar>}
           action={
-            <IconButton onClick={() => history.push(`/sessioninfo`)}>
+            <IconButton onClick={() => history.push(`/sessioninfo/${session._id}`)}>
               <InfoOutlinedIcon />
             </IconButton>
           }

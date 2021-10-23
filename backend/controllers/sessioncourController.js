@@ -110,8 +110,42 @@ exports.getInfoSessioncourStudent = catchAsyncErrors(async (req, res, next) => {
   }
 
   let expression = null
-  expression = await Expression.find({user:req.user.id, sessioncour:req.params.id})
+  if(req.user.role !== 'user'){
+    let allexpression = []
+    let surprised = 0
+    let disgusted = 0
+    let fearful = 0
+    let sad = 0
+    let angry = 0
+    let happy = 0
+    let neutral = 0
+    allexpression = await Expression.find({sessioncour:req.params.id})
+    
+    allexpression.forEach(exp => {
+      surprised  += exp.surprised
+      disgusted  += exp.disgusted
+      fearful  += exp.fearful
+      sad += exp.sad
+      angry  += exp.angry
+      happy  += exp.happy
+      neutral  += exp.neutral
+    })
+    expression = [{
+      'surprised'  : surprised,
+      'disgusted'  : disgusted,
+      'fearful'  : fearful,
+      'sad' : sad,
+      'angry'  : angry,
+      'happy'  : happy,
+      'neutral'  : neutral
+    }]
+  }else{
+    expression = await Expression.find({user:req.user.id, sessioncour:req.params.id})
 
+  }
+  // expression = await Expression.find({user:req.user.id, sessioncour:req.params.id})
+  console.log('expression  expression dddddd')
+  console.log(expression)
   res.status(200).json({
       sessioncour,
       expression
@@ -189,7 +223,34 @@ exports.sessioncoursAvailable= catchAsyncErrors(async (req, res, next) => {
     await Sessioncour.find({groups:{_id : group._id},status:1})
     .then((sessioncour) => {
       if(Object.keys(sessioncour).length > 0){
-        sessioncoursActive.push(sessioncour[0])
+        sessioncoursActive = sessioncoursActive.concat(sessioncour)
+        // sessioncoursActive.push(sessioncour[0])
+      }
+    })
+
+  )))
+  console.log(sessioncour)
+
+  // sessioncoursActive = await Sessioncour.find({status:1});
+  res.status(200).json({
+      success: true,
+      count : sessioncoursActive.length,
+      sessioncoursActive
+  })
+
+})
+
+// Get Sessioncour No Active Student-Teacher   =>   /api/v1/sessionnoactivestudentteacher
+exports.sessioncoursNoActiveStudentTeacher= catchAsyncErrors(async (req, res, next) => {
+
+  let sessioncoursNoActiveStudentTeacher = []
+  const groups = await Group.find({students:{_id : req.params.id}})
+  const a = await Promise.all(groups.map(async (group)=>(
+    await Sessioncour.find({groups:{_id : group._id},status:2,createdBy:req.user.id})
+    .then((sessioncour) => {
+      if(Object.keys(sessioncour).length > 0){
+        sessioncoursNoActiveStudentTeacher = sessioncoursNoActiveStudentTeacher.concat(sessioncour)
+        // sessioncoursNoActiveStudentTeacher.push(sessioncour[0])
       }
     })
 
@@ -197,8 +258,8 @@ exports.sessioncoursAvailable= catchAsyncErrors(async (req, res, next) => {
   // sessioncoursActive = await Sessioncour.find({status:1});
   res.status(200).json({
       success: true,
-      count : sessioncoursActive.length,
-      sessioncoursActive
+      count : sessioncoursNoActiveStudentTeacher.length,
+      sessioncoursNoActiveStudentTeacher
   })
 
 })

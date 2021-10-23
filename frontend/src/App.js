@@ -26,6 +26,7 @@ import SessioncourRoute from './components/sessioncour/SessioncourRoute'
 import AvailableSessions from './components/sessioncour/AvailableSessions'
 import HistorySessions from './components/sessioncour/HistorySessions'
 import HistorySessionsinfo from './components/sessioncour/HistorySessionsinfo'
+import Sessioncourinfo from './components/sessioncour/Sessioncourinfo'
 
 import Expressionrecord from './components/sessioncour/Expressionrecord'
 
@@ -90,6 +91,7 @@ function App() {
             <ProtectedRoute path="/availablesessionsstudent" component={AvailableSessions} exact />
             <ProtectedRoute path="/historySessions" component={HistorySessions} exact />
             <ProtectedRoute path="/historySessionsinfo/:id" component={HistorySessionsinfo} exact />
+            <ProtectedRoute path="/sessioninfo/:id" component={Sessioncourinfo} exact />
 
             <ProtectedRoute path="/expressionrecord/:id" component={Expressionrecord} exact />
 

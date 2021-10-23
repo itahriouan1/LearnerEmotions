@@ -233,7 +233,7 @@ const SessioncourRoute = ({ match }) => {
               startIcon={<AddCircleOutlineOutlinedIcon />}
               onClick={handleClickOpen}
             >
-            Add Sessioncour
+              Add Sessioncour
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
               <DialogTitle id="form-dialog-title">Add Sessioncour</DialogTitle>
