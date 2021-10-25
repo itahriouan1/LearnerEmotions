@@ -18,6 +18,7 @@ mongoose.set('useFindAndModify', false);
 // Send Expression of user   =>   /api/v1/sessioncour/sendexpression
 exports.sendExpression = catchAsyncErrors(async (req, res, next) => {
 
+  console.log('req.body')
   console.log(req.body)
   // check if session stile active or not
   const sessioncour = await Sessioncour.find({_id:req.body.sessioncour})
