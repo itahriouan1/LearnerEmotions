@@ -2,8 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension'
 
+
+
 import { 
   authReducer,
+  registerteacherReducer,
   userReducer,
   allUsersReducer,
   allUsersGroupReducer,
@@ -22,22 +25,23 @@ import {
   sessioncoursAvailableStudentReducer,
   sessioncoursHistoryStudentReducer,
   infoSessioncourReducer,
-  sessionnoactivestudentteacherReducer
- } from './reducers/sessioncourReducers'
+  sessionnoactivestudentteacherReducer } from './reducers/sessioncourReducers'
 
 import {
-  naturesessioncourDetailsReducer,
- } from './reducers/naturesessioncourReducers'
+  naturesessioncourDetailsReducer, } from './reducers/naturesessioncourReducers'
 
 import {
   startExpressionReducer,
   sendExpressionReducer,
-  expressionStudentReducer
- } from './reducers/expressionReducers'
+  expressionStudentReducer } from './reducers/expressionReducers'
+
+import { cartReducer } from './reducers/cartReducers'
+
 
 const reducer = combineReducers({
    
   auth: authReducer,
+  registerteacher: registerteacherReducer,
   user: userReducer,
   allUsers: allUsersReducer,
   allUsersGroup: allUsersGroupReducer,
@@ -60,13 +64,19 @@ const reducer = combineReducers({
 
   startExpression:startExpressionReducer,
   sendExpression:sendExpressionReducer,
-  expressionStudent:expressionStudentReducer
+  expressionStudent:expressionStudentReducer,
+
+  cart: cartReducer,
 
 })
 
 
 let initialState = {
-    
+  cart: {
+    cartItems: localStorage.getItem('cartItems')
+        ? JSON.parse(localStorage.getItem('cartItems'))
+        : {}
+}
 }
 
 const middlware = [thunk];

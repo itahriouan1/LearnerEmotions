@@ -24,6 +24,9 @@ import { getUserDetailsRELATION, clearErrors } from '../../actions/userActions';
 import { getSessionsNoActiveStudentTeacher } from '../../actions/sessioncourActions';
 import { getExpressionStudent } from '../../actions/expressionActions';
 
+import { EXPRESSION_STUDENT_RESET } from '../../constants/expressionConstants';
+
+
 
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -81,6 +84,11 @@ const StuentProfile = ({match}) => {
     dispatch(getUserDetailsRELATION(userId))
     dispatch(getSessionsNoActiveStudentTeacher(userId))
 
+    if(session == ''){
+      dispatch({ type: EXPRESSION_STUDENT_RESET })
+
+    }
+
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -94,6 +102,7 @@ const StuentProfile = ({match}) => {
     dispatch(getExpressionStudent(event.target.value, userId));
 
   };
+
 
   return (
     <Fragment>
@@ -196,54 +205,67 @@ const StuentProfile = ({match}) => {
           >
             Expression
           </Typography>
-          {expression && expression.length > 0 ? (
-            expression.map(exp=>(
-              <div>
-                { ( exp.neutral == 0 && exp.happy == 0 && exp.sad == 0 && exp.angry == 0 && exp.fearful == 0 && exp.disgusted == 0 && exp.surprised == 0 ) ?
-                  (
-                    <Typography 
-                      variant="h7" 
-                      gutterBottom
-                    >
-                      No Expression
-                    </Typography>
+          {session ? (
+            expression && expression.length > 0 ? (
+              expression.map(exp=>(
+                <div>
+                  { ( exp.neutral == 0 && exp.happy == 0 && exp.sad == 0 && exp.angry == 0 && exp.fearful == 0 && exp.disgusted == 0 && exp.surprised == 0 ) ?
+                    (
+                      <Typography 
+                        variant="h7" 
+                        gutterBottom
+                      >
+                        No Expression
+                      </Typography>
+  
+                    ):(
+                      <Chart
+                        width={'600px'}
+                        height={'400px'}
+                        chartType="PieChart"
+                        loader={<div>Loading Expression</div>}
+                        data={[
+                          ['Expression', 'Value-Expression'],
+                          ['neutral', exp.neutral],
+                          ['happy', exp.happy],
+                          ['sad', exp.sad],
+                          ['angry', exp.angry],
+                          ['fearful', exp.fearful],
+                          ['disgusted', exp.disgusted],
+                          ['surprised', exp.surprised]
+                        ]}
+                        options={{
+                          title: 'My Expressin in s',
+                          is3D: true,
+                          backgroundColor: '# EE82EE'
+                        }}
+                        rootProps={{ 'data-testid': '1' }}
+                      />
+                    )
+                  }
+                </div>
+  
+              ))
+            ):(
+              <Typography 
+                variant="h7" 
+                gutterBottom
+              >
+                No Expression
+              </Typography>
+            )
 
-                  ):(
-                    <Chart
-                      width={'600px'}
-                      height={'400px'}
-                      chartType="PieChart"
-                      loader={<div>Loading Expression</div>}
-                      data={[
-                        ['Expression', 'Value-Expression'],
-                        ['neutral', exp.neutral],
-                        ['happy', exp.happy],
-                        ['sad', exp.sad],
-                        ['angry', exp.angry],
-                        ['fearful', exp.fearful],
-                        ['disgusted', exp.disgusted],
-                        ['surprised', exp.surprised]
-                      ]}
-                      options={{
-                        title: 'My Expressin in s',
-                        is3D: true,
-                        backgroundColor: '# EE82EE'
-                      }}
-                      rootProps={{ 'data-testid': '1' }}
-                    />
-                  )
-                }
-              </div>
-
-            ))
-          ):(
+          ) : (
             <Typography 
               variant="h7" 
               gutterBottom
             >
-              No Expression
+              Select Expression
+            {/* {expression ? expression = null : ''} */}
+
             </Typography>
-          )}
+          )
+          }
 
         </div>
         

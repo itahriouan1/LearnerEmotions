@@ -62,6 +62,7 @@ exports.newGroup = catchAsyncErrors(async (req, res, next) => {
                             name:student.prenom+" "+student.nom,
                             email:student.nom+"_"+student.prenom.substr(0, 3)+"@upf.ac.ma",
                             password:"Upf_"+new Date().getFullYear(),
+                            role:'student',
                             avatar,
                         }).then( user => {
                             Group.findByIdAndUpdate(group._id,{

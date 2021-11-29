@@ -37,8 +37,14 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     password,
     avatar,
   });
+  
+  console.log('nice ;)')
 
-  sendToken(user, 200, res);
+  res.status(200).json({
+    success: true,
+  })
+
+  // sendToken(user, 200, res);
 });
 
 // Login User  =>  /a[i/v1/login

@@ -30,6 +30,9 @@ import Sessioncourinfo from './components/sessioncour/Sessioncourinfo'
 
 import Expressionrecord from './components/sessioncour/Expressionrecord'
 
+import DashboardRoute from './components/admin/DashboardRoute'
+
+
 
 
 import ProtectedRoute from './components/route/ProtectedRoute'
@@ -73,7 +76,6 @@ function App() {
           <Header>
             <Route path="/" component={About} exact />
             <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
             <ProtectedRoute path="/me" component={Profile} exact />
             <ProtectedRoute path="/me/update" component={UpdateProfile} exact />
             <ProtectedRoute path="/password/update" component={UpdatePassword} exact />
@@ -94,6 +96,10 @@ function App() {
             <ProtectedRoute path="/sessioninfo/:id" component={Sessioncourinfo} exact />
 
             <ProtectedRoute path="/expressionrecord/:id" component={Expressionrecord} exact />
+
+            <ProtectedRoute path="/dashboard" component={DashboardRoute} exact />
+            <ProtectedRoute path="/addadmin" component={Register} exact />
+
 
             
 

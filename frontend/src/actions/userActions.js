@@ -87,7 +87,7 @@ export const register = (userData) => async (dispatch) => {
 
         dispatch({
             type: REGISTER_USER_SUCCESS,
-            payload: data.user
+            payload: data.success
         })
 
     } catch (error) {

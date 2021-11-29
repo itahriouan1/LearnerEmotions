@@ -91,11 +91,11 @@ const Register = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { isAuthenticated, error, loading } = useSelector(state => state.auth);
+  const { teacher, error, loading } = useSelector(state => state.registerteacher);
 
   useEffect(() => {
 
-    if (isAuthenticated) {
+    if (teacher) {
       history.push('/')
     }
 
@@ -104,7 +104,7 @@ const Register = ({ history }) => {
       dispatch(clearErrors());
     }
 
-  }, [dispatch, alert, isAuthenticated, error, history])
+  }, [dispatch, alert, teacher, error, history])
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -114,6 +114,12 @@ const Register = ({ history }) => {
     formData.set('email', email);
     formData.set('password', password);
     formData.set('avatar', avatar);
+
+    console.log('name',name)
+    console.log('email',email)
+    console.log('password',password)
+    console.log('avatar',avatar)
+    console.log('formData',formData)
 
     dispatch(register(formData))
   }
@@ -154,7 +160,7 @@ const Register = ({ history }) => {
       ) : (
         <Container>
 
-          <MetaData title={'Register User'} />
+          <MetaData title={'Register Teacher'} />
 
           <Typography
             variant="h6" 

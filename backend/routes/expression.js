@@ -12,8 +12,8 @@ const {
 
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
 
-router.route('/sessioncour/sendexpression').put(isAuthenticatedUser, authorizeRoles('user'), sendExpression);
-router.route('/startexpression/:id').get(isAuthenticatedUser, authorizeRoles('user'), startExpression);
+router.route('/sessioncour/sendexpression').put(isAuthenticatedUser, authorizeRoles('student'), sendExpression);
+router.route('/startexpression/:id').get(isAuthenticatedUser, authorizeRoles('student'), startExpression);
 router.route('/expressionsessionstudent/:id/:studentid').get(isAuthenticatedUser, authorizeRoles('teacher','admin'),getExpressionSessionStudent);
 
 

@@ -8,7 +8,9 @@ import {
   EXPRESSION_STUDENT_REQUEST,
   EXPRESSION_STUDENT_SUCCESS,
   EXPRESSION_STUDENT_FAIL,
-  CLEAR_ERRORS
+  EXPRESSION_STUDENT_RESET,
+  CLEAR_ERRORS,
+
 } from '../constants/expressionConstants'
 
 
@@ -97,6 +99,13 @@ export const expressionStudentReducer = (state = {}, action) => {
               expression:action.payload.expression
           }
 
+      case EXPRESSION_STUDENT_RESET:
+        return {
+            ...state,
+            loading: false,
+            expression:[]
+
+        }
 
       case EXPRESSION_STUDENT_FAIL:
           return {

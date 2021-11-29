@@ -12,6 +12,19 @@ import Toolbar from '@material-ui/core/Toolbar'
 import { format } from 'date-fns'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+
+import Container from '@material-ui/core/Container';
+
+
+// Dialog import
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import { AddCircleOutlineOutlined, 
   SubjectOutlined, 
   ExitToApp,
@@ -31,6 +44,7 @@ import { useAlert } from 'react-alert'
 import { logout } from '../../actions/userActions'
 import Loader from '../layout/Loader'
 
+import Expressionrecord from '../sessioncour/Expressionrecord'
 
 const drawerWidth = 240
 
@@ -89,6 +103,16 @@ export default function Header({ children }) {
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector(state => state.auth)
+  const { cartItems } = useSelector(state => state.cart)
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const logoutHandler = () => {
       dispatch(logout());
@@ -101,9 +125,9 @@ export default function Header({ children }) {
 
   const adminMenuItems = [
     { 
-      text: 'Dashbord', 
+      text: 'Dashboard', 
       icon: <PersonAdd color="secondary" />, 
-      path: '/dashbord' 
+      path: '/dashboard' 
     },
     // { 
     //   text: 'My Sessions', 
@@ -187,6 +211,46 @@ export default function Header({ children }) {
                 </Typography>
                 {user ? ( 
                   <Fragment>
+                    {cartItems.length && (
+                      <Fragment>
+                        {/* <div  style={{display: 'none'}}>
+                          <Expressionrecord />
+
+                        </div> */}
+                       
+                        <Button 
+                          variant="contained" 
+                          className={classes.btn}
+                          startIcon={<AddCircleOutlineOutlinedIcon />}
+                          onClick={handleClickOpen}
+                          style={{ marginRight: '30px'}}
+                        >
+                          ExpressionActive
+                        </Button>
+                        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                          <DialogTitle id="form-dialog-title">Active Sessioncour</DialogTitle>
+                          <DialogContent>
+                            <DialogContentText>
+                              <Container>
+                                <Expressionrecord />
+
+                              </Container>
+                            </DialogContentText>
+                            </DialogContent>
+                          <DialogActions>
+                            <Button className={classes.btn} onClick={handleClose} >
+                              Cancel
+                            </Button>
+                            <Button className={classes.btn} onClick={handleClose} >
+                              StopRecord
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+
+                     </Fragment>
+
+                    )}
+
                     <Typography>{user.email}</Typography>
                       <Link to="/me">
                         <Avatar 
@@ -262,7 +326,7 @@ export default function Header({ children }) {
                     </ListItem>
                   ))
                 }
-                {user && user.role==="user" && studentMenuItems.map((item) => (
+                {user && user.role==="student" && studentMenuItems.map((item) => (
                     <ListItem 
                       button 
                       key={item.text} 

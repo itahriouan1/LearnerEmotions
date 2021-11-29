@@ -40,11 +40,11 @@ router.route('/admin/sessiongroup').get(isAuthenticatedUser, authorizeRoles('adm
 
 
 // user route
-router.route('/groupactivesessioncour').get(isAuthenticatedUser, authorizeRoles('user','admin'), activeSessioncoursOfAGroup);
-router.route('/availablesessioncours').get(isAuthenticatedUser, authorizeRoles('user'),sessioncoursAvailable);
-router.route('/historysessioncours').get(isAuthenticatedUser, authorizeRoles('user'),sessioncoursHistory);
+router.route('/groupactivesessioncour').get(isAuthenticatedUser, authorizeRoles('student','admin'), activeSessioncoursOfAGroup);
+router.route('/availablesessioncours').get(isAuthenticatedUser, authorizeRoles('student'),sessioncoursAvailable);
+router.route('/historysessioncours').get(isAuthenticatedUser, authorizeRoles('student'),sessioncoursHistory);
 router.route('/sessioncoursgroup/:id').get(isAuthenticatedUser, authorizeRoles('teacher','admin'),getSessioncoursGroup);
-router.route('/infosessioncourstudent/:id').get(isAuthenticatedUser, authorizeRoles('user','teacher','admin'),getInfoSessioncourStudent);
+router.route('/infosessioncourstudent/:id').get(isAuthenticatedUser, authorizeRoles('student','teacher','admin'),getInfoSessioncourStudent);
 router.route('/sessionnoactivestudentteacher/:id').get(isAuthenticatedUser, authorizeRoles('teacher','admin'),sessioncoursNoActiveStudentTeacher);
 
 
