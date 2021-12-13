@@ -12,6 +12,10 @@ import {
   DELETE_GROUP_SUCCESS,
   DELETE_GROUP_RESET,
   DELETE_GROUP_FAIL,
+  DELETE_GROUP_STUDENT_REQUEST,
+  DELETE_GROUP_STUDENT_SUCCESS,
+  DELETE_GROUP_STUDENT_RESET,
+  DELETE_GROUP_STUDENT_FAIL,
   UPDATE_GROUP_REQUEST,
   UPDATE_GROUP_SUCCESS,
   UPDATE_GROUP_RESET,
@@ -86,6 +90,48 @@ export const newGroup = (a) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: NEW_GROUP_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+// Delete group 
+export const deleteGroup = (id) => async (dispatch) => {
+    try {
+
+        dispatch({ type: DELETE_GROUP_REQUEST })
+
+        const { data } = await axios.delete(`/api/v1/group/${id}`)
+
+        dispatch({
+            type: DELETE_GROUP_SUCCESS,
+            payload: data.success
+        })
+
+    } catch (error) {
+        dispatch({
+            type: DELETE_GROUP_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+// Delete student from group 
+export const deleteGroupStudent = (idgroup,idstudent) => async (dispatch) => {
+    try {
+
+        dispatch({ type: DELETE_GROUP_STUDENT_REQUEST })
+
+        const { data } = await axios.delete(`/api/v1/group/deletestudent/${idgroup}/${idstudent}`)
+
+        dispatch({
+            type: DELETE_GROUP_STUDENT_SUCCESS,
+            payload: data.success
+        })
+
+    } catch (error) {
+        dispatch({
+            type: DELETE_GROUP_STUDENT_FAIL,
             payload: error.response.data.message
         })
     }

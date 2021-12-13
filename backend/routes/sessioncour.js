@@ -22,7 +22,7 @@ const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
 //Teacher & Admin Route
 router.route('/sessioncour/new').post(isAuthenticatedUser, authorizeRoles('teacher','admin'), newSessioncour);
 router.route('/mysessioncourscreated').get(isAuthenticatedUser, authorizeRoles('teacher','admin'),mySessioncoursCreated);
-router.route('/deletesessioncour')
+router.route('/deletesessioncour/:id')
     .delete(isAuthenticatedUser, authorizeRoles('teacher','admin'), deleteSessioncour)
 router.route('/updatsessioncourstatus/:id')
     .put(isAuthenticatedUser, authorizeRoles('teacher','admin'), updateSessioncourStatus)

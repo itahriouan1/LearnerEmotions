@@ -142,7 +142,7 @@ export default function Header({ children }) {
     { 
       text: 'Session', 
       icon: <AddCircleOutlineOutlined color="secondary" />, 
-      path: '/sessionscour' 
+      path: '/allsessions' 
     },
     
   ];
@@ -160,7 +160,7 @@ export default function Header({ children }) {
     { 
       text: 'Session', 
       icon: <AddCircleOutlineOutlined color="secondary" />, 
-      path: '/sessionscour' 
+      path: '/allsessions' 
     },
   ];
   const studentMenuItems = [

@@ -29,7 +29,7 @@ router.route('/group/:id')
 router.route('/usersgroup/:id').get(isAuthenticatedUser, authorizeRoles('teacher','admin'), getUsersGroup)
 router.route('/group/createstudents/:id').put(isAuthenticatedUser, authorizeRoles('teacher','admin'), groupCreateStudent)
 router.route('/group/addstudents/:id').put(isAuthenticatedUser, authorizeRoles('teacher','admin'), groupAddStudent)
-router.route('/group/deletestudent').delete(isAuthenticatedUser, authorizeRoles('teacher','admin'), groupDeleteStudent)
+router.route('/group/deletestudent/:idgroup/:idstudent').delete(isAuthenticatedUser, authorizeRoles('teacher','admin'), groupDeleteStudent)
 
 //Admin Route
 router.route('/admin/groups').get(isAuthenticatedUser, authorizeRoles('admin'),getAllGroups);

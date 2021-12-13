@@ -1,5 +1,7 @@
 const Group = require('../models/group')
 const User = require('../models/user');
+const Expression = require('../models/expression');
+const Sessioncour = require('../models/sessioncour');
 
 
 const ErrorHandler = require('../utils/errorHandler');
@@ -153,22 +155,57 @@ exports.updateGroup = catchAsyncErrors(async (req, res, next) => {
 
 })
 
-// Delete Group   =>   /api/v1/product/:id
+// Delete Group   =>   /api/v1/group/:id
 exports.deleteGroup = catchAsyncErrors(async (req, res, next) => {
 
-    const group = await Group.findById(req.params.id);
+    // const group = await Group.findById(req.params.id);
 
-    if (!group) {
-        return next(new ErrorHandler('Group not found', 404));
+    // if (!group) {
+    //     return next(new ErrorHandler('Group not found', 404));
+    // }
+
+    // await group.remove();
+
+    // res.status(200).json({
+    //     success: true,
+    //     message: 'Group is deleted.'
+    // })
+
+    const sessioncour = await Sessioncour.find({groups : {_id : req.params.id}});
+    let expression = []
+    let expr = []
+    let foundexpression = false
+
+    if(sessioncour.length > 0){
+        expression = await Promise.all(sessioncour.map( async (session) => {
+            expression = await Expression.find({sessioncour:session._id})
+            console.log(expression)
+            console.log('bidaya')
+            expr = await Promise.all(expression.map( async (exp) => {
+
+                if(exp._id != null){
+                    foundexpression = true
+                }
+    
+            }))
+            console.log('nihaya')
+
+        }))
     }
 
-    await group.remove();
-
-    res.status(200).json({
+    if (foundexpression === true) {
+      return next(new ErrorHandler('You cant delete this group cz it have expression data', 404));
+    }else{
+        expression = await Promise.all(sessioncour.map( async (session) => (
+            await session.remove()
+        )))
+      const group = await Group.findById(req.params.id);
+      await group.remove();
+      res.status(200).json({
         success: true,
         message: 'Group is deleted.'
     })
-
+    }
 })
 
 // Get single group details   =>   /api/v1/group/:id
@@ -329,25 +366,53 @@ exports.groupDeleteStudent = catchAsyncErrors(async (req, res, next) => {
     // is not working cz Cast to ObjectId failed for value "deletestudent" (type string) at path "_id" for model "Group"
     // const {students} = req.body
     // console.log("0")
-    // const groups = await Group.find({ createdBy: req.user.id });
-    // console.log("1")
-    // let group = groups.find(group => group._id.toString() === req.query.groupId.toString());
-    // console.log("2")
-    // if (!group) {
-    //     return next(new ErrorHandler('Group not found', 404));
-    // }
-    // console.log("3")
-    // const students = group.students.filter(student => student._id.toString() !== req.query.id.toString());
-    // console.log("4")
-    // await Group.findByIdAndUpdate(req.query.groupId, {
-    //     students
-    // }, {
-    //     new: true,
-    //     runValidators: true,
-    //     useFindAndModify: false
-    // })
+    const groups = await Group.find({ createdBy: req.user.id });
+    console.log("1")
+    let group = groups.find(group => group._id.toString() === req.params.idgroup.toString());
+    console.log("2")
+    if (!group) {
+        return next(new ErrorHandler('Group not found', 404));
+    }
+    console.log("3")
+    const students = group.students.filter(student => student._id.toString() !== req.params.idstudent.toString());
+    console.log("4")
+    await Group.findByIdAndUpdate(req.params.idgroup, {
+        students
+    }, {
+        new: true,
+        // runValidators: true,
+        useFindAndModify: false
+    })
 
     res.status(200).json({
-        success: true
+        success: true,
+        message: 'Student is deleted from Group.'
+        
     })
 })
+
+// Delete group    =>   /api/v1/
+// exports.deleteGroup = catchAsyncErrors(async (req, res, next) => {
+//     const sessioncour = await Sessioncour.find({groups : req.params.id});
+//     let expression
+
+//     if(sessioncour.length > 0){
+//         sessioncour.map(session =>(
+//             expression = await Expression.find({sessioncour:session._id})
+//         ))
+//     }
+//     if (expression.length > 0) {
+//       return next(new ErrorHandler('You cant delete this group cz it have expression data', 404));
+//     }else{
+//       sessioncour.map(session =>(
+//         await session.remove()
+//       ))
+//       const group = await Group.findById(req.params.id);
+//       await group.remove();
+//       res.status(200).json({
+//         success: true,
+//         message: 'Group is deleted.'
+//     })
+//     }
+
+// })

@@ -10,6 +10,10 @@ import {
   DELETE_GROUP_SUCCESS,
   DELETE_GROUP_RESET,
   DELETE_GROUP_FAIL,
+  DELETE_GROUP_STUDENT_REQUEST,
+  DELETE_GROUP_STUDENT_SUCCESS,
+  DELETE_GROUP_STUDENT_RESET,
+  DELETE_GROUP_STUDENT_FAIL,
   UPDATE_GROUP_REQUEST,
   UPDATE_GROUP_SUCCESS,
   UPDATE_GROUP_RESET,
@@ -127,5 +131,64 @@ export const newGroupReducer = (state = { group: {} }, action) => {
 
     default:
         return state
+  }
+}
+
+export const groupReducer = (state = {}, action) => {
+  switch (action.type) {
+
+      case DELETE_GROUP_REQUEST:
+      case DELETE_GROUP_STUDENT_REQUEST:
+      case UPDATE_GROUP_REQUEST:
+          return {
+              ...state,
+              loading: true
+          }
+
+      case DELETE_GROUP_STUDENT_SUCCESS:
+      case DELETE_GROUP_SUCCESS:
+        return {
+            ...state,
+            loading: false,
+            isDeleted: action.payload
+        }
+
+      case UPDATE_GROUP_SUCCESS:
+          return {
+              ...state,
+              loading: false,
+              isUpdated: action.payload
+          }
+
+
+      case DELETE_GROUP_FAIL:
+      case DELETE_GROUP_STUDENT_FAIL:
+      case UPDATE_GROUP_FAIL:
+          return {
+              ...state,
+              error: action.payload
+          }
+
+      case DELETE_GROUP_STUDENT_RESET:
+      case DELETE_GROUP_RESET:
+        return {
+            ...state,
+            isDeleted: false
+        }
+
+      case UPDATE_GROUP_RESET:
+          return {
+              ...state,
+              isUpdated: false
+          }
+
+      case CLEAR_ERRORS:
+          return {
+              ...state,
+              error: null
+          }
+
+      default:
+          return state
   }
 }

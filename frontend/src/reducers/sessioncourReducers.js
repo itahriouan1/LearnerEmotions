@@ -10,6 +10,10 @@ import {
   UPDATE_SESSIONCOUR_STATUS_SUCCESS,
   UPDATE_SESSIONCOUR_STATUS_RESET,
   UPDATE_SESSIONCOUR_STATUS_FAIL,
+  DELETE_SESSIONCOUR_REQUEST,
+  DELETE_SESSIONCOUR_SUCCESS,
+  DELETE_SESSIONCOUR_RESET,
+  DELETE_SESSIONCOUR_FAIL,
   NEW_SESSIONCOUR_REQUEST,
   NEW_SESSIONCOUR_SUCCESS,
   NEW_SESSIONCOUR_FAIL,
@@ -174,11 +178,19 @@ export const sessioncoursHistoryStudentReducer = (state = { sessioncoursHistory:
 export const sessioncourReducer = (state = {}, action) => {
     switch (action.type) {
 
+        case DELETE_SESSIONCOUR_REQUEST:
         case UPDATE_SESSIONCOUR_STATUS_REQUEST:
             return {
                 ...state,
                 loading: true
             }
+        
+        case DELETE_SESSIONCOUR_SUCCESS:
+        return {
+            ...state,
+            loading: false,
+            isDeleted: action.payload
+        }
 
         case UPDATE_SESSIONCOUR_STATUS_SUCCESS:
             return {
@@ -187,13 +199,18 @@ export const sessioncourReducer = (state = {}, action) => {
                 isUpdated: action.payload
             }
 
-
+        case DELETE_SESSIONCOUR_FAIL:
         case UPDATE_SESSIONCOUR_STATUS_FAIL:
             return {
                 ...state,
                 error: action.payload
             }
 
+        case DELETE_SESSIONCOUR_RESET:
+            return {
+                ...state,
+                isDeleted: false
+            }
 
         case UPDATE_SESSIONCOUR_STATUS_RESET:
             return {

@@ -33,31 +33,35 @@ exports.sendExpression = catchAsyncErrors(async (req, res, next) => {
 
   }
   req.body.user = req.user.id;
-  const expression = await Expression.find({natureSession : req.body.natureSession,sessioncour:req.body.sessioncour})
-  if (expression.length == 0) {
-    expression = await Expression.create(req.body);
-  }else{
-    neutral =req.body.neutral + expression[0].neutral
-    happy = req.body.happy + expression[0].happy
-    sad = req.body.sad + expression[0].sad
-    angry = req.body.angry + expression[0].angry
-    fearful = req.body.fearful + expression[0].fearful
-    disgusted =req.body.disgusted + expression[0].disgusted
-    surprised =req.body.surprised + expression[0].surprised
+  
+  // drt creat expression fkoola mrra
+  const expression = await Expression.create(req.body);
 
-    await Expression.findByIdAndUpdate(expression[0]._id, {
-      neutral,
-      happy,
-      sad,
-      angry,
-      fearful,
-      disgusted,
-      surprised
-    },{
-      new: true,
-    });
+  // const expression = await Expression.find({natureSession : req.body.natureSession,sessioncour:req.body.sessioncour})
+  // if (expression.length == 0) {
+  //   expression = await Expression.create(req.body);
+  // }else{
+  //   neutral =req.body.neutral + expression[0].neutral
+  //   happy = req.body.happy + expression[0].happy
+  //   sad = req.body.sad + expression[0].sad
+  //   angry = req.body.angry + expression[0].angry
+  //   fearful = req.body.fearful + expression[0].fearful
+  //   disgusted =req.body.disgusted + expression[0].disgusted
+  //   surprised =req.body.surprised + expression[0].surprised
+
+  //   await Expression.findByIdAndUpdate(expression[0]._id, {
+  //     neutral,
+  //     happy,
+  //     sad,
+  //     angry,
+  //     fearful,
+  //     disgusted,
+  //     surprised
+  //   },{
+  //     new: true,
+  //   });
     
-  }
+  // }
 
   res.status(201).json({
     success: true,
@@ -104,9 +108,51 @@ exports.getExpressionSessionStudent = catchAsyncErrors(async (req, res, next) =>
   expression = await Expression.find({user: req.params.studentid, sessioncour: req.params.id})
   console.log(expression)
 
+  let surprised = 0;
+  let disgusted = 0;
+  let fearful = 0;
+  let sad = 0;
+  let angry = 0;
+  let happy = 0;
+  let neutral = 0;
+  let natureSession = '';
+  let dateTimeStopRecording = null;
+  let dateTimeStartRecording = '';
+  expression.map((exp)=>(
+    console.log(typeof(exp.surprised)),
+    surprised = surprised + exp.surprised,
+    disgusted = disgusted + exp.disgusted,
+    fearful = fearful + exp.fearful,
+    sad = sad + exp.sad,
+    angry = angry + exp.angry,
+    happy = happy + exp.happy,
+    neutral = neutral + exp.neutral,
+    natureSession =  null,
+    dateTimeStartRecording = exp.dateTimeStartRecording,
+    console.log('exp'),
+    console.log(exp)
+  ))
+  const expressionalltime = [ {
+    surprised: surprised,
+    disgusted: disgusted,
+    fearful: fearful,
+    sad: sad,
+    angry: angry,
+    happy: happy,
+    neutral: neutral,
+    natureSession: natureSession,
+    user: req.params.studentid,
+    sessioncour: req.params.id,
+    dateTimeStopRecording: null,
+    dateTimeStartRecording: dateTimeStartRecording,
+
+  }]
+  console.log('salina')
+  console.log(expressionalltime)
   res.status(200).json({
       sessioncour,
-      expression
+      expression:expressionalltime,
+      expressiontime:expression,
   })
 
 })

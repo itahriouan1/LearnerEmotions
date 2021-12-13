@@ -36,13 +36,21 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 
+import IconButton from '@material-ui/core/IconButton'
+import DeleteOutlined from '@material-ui/icons/DeleteOutlined'
+import SystemUpdateAltOutlinedIcon from '@material-ui/icons/SystemUpdateAltOutlined';
+
+
 import { Link } from 'react-router-dom'
 
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGroupDetails, clearErrors } from '../../actions/groupActions';
+import { getGroupDetails, clearErrors,deleteGroup, deleteGroupStudent } from '../../actions/groupActions';
 import { allUsersGroup } from '../../actions/userActions';
 import { allSessioncoursGroup } from '../../actions/sessioncourActions';
+import { DELETE_GROUP_RESET } from '../../constants/groupConstants'
+import { DELETE_GROUP_STUDENT_RESET } from '../../constants/groupConstants'
+
 import { newGroup } from '../../actions/groupActions'
 import { NEW_GROUP_RESET } from '../../constants/groupConstants'
 
@@ -111,6 +119,8 @@ const GroupDetails = ({ match, history }) => {
   const { sessioncours } = useSelector((state) => state.allSessioncoursGroup);
 
   const { loadingnewGroup=loading , errorewGroup=error, success } = useSelector(state => state.newGroup);
+  const { error: deleteError, isDeleted } = useSelector(state => state.group)
+
   
 
   useEffect(() => {
@@ -132,7 +142,19 @@ const GroupDetails = ({ match, history }) => {
       alert.success('Stuent add successfully');
       dispatch({ type: NEW_GROUP_RESET })
     }
-  }, [dispatch,success,alert, error, match.params.id]);
+
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors())
+    }
+
+    if (isDeleted) {
+        alert.success('Group deleted successfully');
+        history.push('/groups');
+        dispatch({ type: DELETE_GROUP_RESET })
+        dispatch({ type: DELETE_GROUP_STUDENT_RESET })
+    }
+  }, [dispatch,success,alert, error, match.params.id, deleteError, isDeleted]);
 
   const PostData = ()=>{
     // e.preventDefault()
@@ -210,6 +232,14 @@ const GroupDetails = ({ match, history }) => {
     setValueRadio(event.target.value);
   };
 
+  const fDeleteGroup = () => {
+    dispatch(deleteGroup(match.params.id));
+  };
+
+  const fDeleteGroupStudent = (idstudent) => {
+    // dispatch(deleteGroupStudent(match.params.id,idstudent));
+  };
+
   return (
     <Fragment>
       <MetaData title={group.name} />
@@ -268,6 +298,20 @@ const GroupDetails = ({ match, history }) => {
                 >
                   {group.createdAt}
                 </Typography>
+                <IconButton
+                  className={classes.expand}
+                  onClick={() => fDeleteGroup()}
+                >
+                  <DeleteOutlined /> 
+                    
+                </IconButton>
+                <IconButton
+                className={classes.expand}
+                  // onClick={() => fUpdateSessioncour()}
+                >
+                  <SystemUpdateAltOutlinedIcon /> 
+                    
+                </IconButton>
                 <div className={classes.paper}>
                   <div className={classes.paper}>
                     <Button 
@@ -421,7 +465,7 @@ const GroupDetails = ({ match, history }) => {
                           Cancel
                         </Button>
                         <Button className={classes.btn} onClick={PostData} >
-                          Added
+                          Add
                         </Button>
                       </DialogActions>
                     </Dialog>
@@ -439,7 +483,16 @@ const GroupDetails = ({ match, history }) => {
                                 />
                                 {/* <PeopleAltOutlinedIcon fontSize="small" /> */}
                               </ListItemIcon>               
-                            <Typography inline variant="body1" style={{marginTop:'12px'}}>{student.email} </Typography>
+                            <Typography inline variant="body1" style={{marginTop:'12px'}}>
+                              {student.email}
+                              {/* <IconButton
+                                className={classes.expand}
+                                onClick={() => fDeleteGroupStudent(student._id)}
+                              >
+                                <DeleteOutlined /> 
+                                  
+                              </IconButton> */}
+                             </Typography>
                           </MenuItem>
                           <hr style={{ borderTop: '0.01px', color:'silver'}}/>
                         </Link>
@@ -455,7 +508,7 @@ const GroupDetails = ({ match, history }) => {
                       className={classes.btn}
                       startIcon={<AddCircleOutlineOutlinedIcon />}
                       onClick={()=>{
-                        history.push('/sessionscour')
+                        history.push('/allsessions')
                       }}
                     >
                     Add Session

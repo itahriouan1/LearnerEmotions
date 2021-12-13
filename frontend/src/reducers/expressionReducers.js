@@ -96,14 +96,16 @@ export const expressionStudentReducer = (state = {}, action) => {
               ...state,
               loading: false,
               sessioncour: action.payload.sessioncour[0],
-              expression:action.payload.expression
+              expression:action.payload.expression,
+              expressiontime:action.payload.expressiontime
           }
 
       case EXPRESSION_STUDENT_RESET:
         return {
             ...state,
             loading: false,
-            expression:[]
+            expression:[],
+            expressiontime:[]
 
         }
 

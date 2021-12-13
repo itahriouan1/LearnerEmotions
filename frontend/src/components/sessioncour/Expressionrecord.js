@@ -251,6 +251,13 @@ const Expressionrecord = ({ match, history }) => {
 								"sessioncour": match.params.id,
 								"dateTimeStopRecording" : null
 							 }));
+							 surprisedd.current = 0;
+							 disgustedd.current = 0;
+							 fearfull.current = 0;
+							 sadd.current = 0;
+							 angryy.current = 0;
+							 happyy.current = 0;
+							 neutrall.current = 0;
 							
 						}else{
 							dispatch(sendExpression({
@@ -266,7 +273,14 @@ const Expressionrecord = ({ match, history }) => {
 								"sessioncour": cartItems,
 								"dateTimeStopRecording" : null
 							 }));
-							
+							 surprisedd.current = 0;
+							 disgustedd.current = 0;
+							 fearfull.current = 0;
+							 sadd.current = 0;
+							 angryy.current = 0;
+							 happyy.current = 0;
+							 neutrall.current = 0;
+							 
 						}
 						// dispatch(sendExpression({
 						// 	"surprised" : surprisedd.current,

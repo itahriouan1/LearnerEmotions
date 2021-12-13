@@ -15,7 +15,8 @@ import {
 import { 
   groupsReducer, 
   groupDetailsReducer,
-  newGroupReducer } from './reducers/groupReducers'
+  newGroupReducer,
+  groupReducer } from './reducers/groupReducers'
 
 import { 
   allSessioncourGroupReducer,
@@ -52,6 +53,7 @@ const reducer = combineReducers({
   groups:groupsReducer,
   groupDetails:groupDetailsReducer,
   newGroup:newGroupReducer,
+  group:groupReducer,
 
   allMySessioncoursTeacher:allMySessioncoursTeacherReducer,
   naturesessioncourDetails:naturesessioncourDetailsReducer,

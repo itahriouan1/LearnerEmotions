@@ -41,6 +41,9 @@ import { useAlert } from 'react-alert';
 // Masonry
 import Masonry from 'react-masonry-css'
 
+import IconButton from '@material-ui/core/IconButton'
+import DeleteOutlined from '@material-ui/icons/DeleteOutlined'
+import SystemUpdateAltOutlinedIcon from '@material-ui/icons/SystemUpdateAltOutlined';
 
 
 /////////////////////
@@ -60,6 +63,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 import { getInfoSessioncourStudent, clearErrors } from '../../actions/sessioncourActions'
+import { deleteSessioncour } from '../../actions/sessioncourActions'
+import { UPDATE_SESSIONCOUR_STATUS_RESET, DELETE_SESSIONCOUR_RESET } from '../../constants/sessioncourConstants'
+
+
 
 const useStyles = makeStyles((theme) =>({
   root: {
@@ -117,6 +124,8 @@ const HistorySessions = ({ match }) => {
   const [matchParamsId, setMatchParamsId] = useState(match.params.id);
 
   const { loading, sessioncour, expression, error } = useSelector(state => state.infoSessioncour)
+  const { error: updateError, isUpdated, isDeleted, error: deleteError } = useSelector(state => state.sessioncour);
+
 
 
 
@@ -130,11 +139,21 @@ const HistorySessions = ({ match }) => {
 
     dispatch(getInfoSessioncourStudent(matchParamsId));
 
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors())
+    }
+
+    if (isDeleted) {
+        alert.success('Sessioncour deleted successfully');
+        history.push('/allsessions');
+        dispatch({ type: DELETE_SESSIONCOUR_RESET })
+    }
     // if(success){
     //   history.push(`/expressionrecord/${id}`)
     // }
 
-  }, [dispatch, alert, error, ref])
+  }, [dispatch, alert, error, ref, deleteError, isDeleted])
 
 
 	const breakpoints = {
@@ -151,6 +170,10 @@ const HistorySessions = ({ match }) => {
     // setRef(ref => ref + 5)
 
 
+  };
+
+  const fDeleteSessioncour = () => {
+    dispatch(deleteSessioncour(match.params.id));
   };
 
   return (
@@ -170,7 +193,7 @@ const HistorySessions = ({ match }) => {
                 gutterBottom
 
               >
-                Session Info
+                Session Infodd
               </Typography>
               <Typography 
                 variant="h6" 
@@ -211,6 +234,21 @@ const HistorySessions = ({ match }) => {
               >
                 {sessioncour.createdAt}
               </Typography>
+
+              <IconButton
+                className={classes.expand}
+                onClick={() => fDeleteSessioncour()}
+              >
+                <DeleteOutlined /> 
+                  
+              </IconButton>
+              <IconButton
+                className={classes.expand}
+                // onClick={() => fUpdateSessioncour()}
+              >
+                <SystemUpdateAltOutlinedIcon /> 
+                  
+              </IconButton>
               <Typography 
                 variant="h4" 
                 gutterBottom

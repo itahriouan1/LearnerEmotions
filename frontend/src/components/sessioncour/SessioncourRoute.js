@@ -58,8 +58,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import SessionCard from './SessionCard'
 
 
-import { getMySessionscoursTeacher, newSessioncour, setStatusSessioncour, clearErrors } from '../../actions/sessioncourActions'
-import { UPDATE_SESSIONCOUR_STATUS_RESET, NEW_SESSIONCOUR_RESET } from '../../constants/sessioncourConstants'
+import { getMySessionscoursTeacher, newSessioncour, setStatusSessioncour, deleteSessioncour, clearErrors } from '../../actions/sessioncourActions'
+import { UPDATE_SESSIONCOUR_STATUS_RESET, NEW_SESSIONCOUR_RESET, DELETE_SESSIONCOUR_RESET } from '../../constants/sessioncourConstants'
 import { getGroups } from '../../actions/groupActions'
 
 
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) =>({
     display: 'flex',
     backgroundColor:"#FEE996",
     borderRadius: "30px",
-    alignItems: "center"
+    alignItems: "center",
   },
   loader: {
     marginTop: theme.spacing(20),
@@ -117,10 +117,11 @@ const SessioncourRoute = ({ match }) => {
 
 
   const { loading, mysessioncoursteacher, error } = useSelector(state => state.allMySessioncoursTeacher)
-  const { error: updateError, isUpdated } = useSelector(state => state.sessioncour);
-  const { error:errorNewSessioncour , loading : loadingNewSessioncour, success, sessioncourMessage } = useSelector(state => state.newSessioncour);
-
+  const { error:errorNewSessioncour , loading : loadingNewSessioncour, success: newSessioncourSuccess , sessioncourMessage } = useSelector(state => state.newSessioncour);
+  
   const { groups, groupsCount} = useSelector(state => state.groups)
+  const { error: updateError, isUpdated, isDeleted, error: deleteError } = useSelector(state => state.sessioncour);
+  // const { error: deleteError, isDeleted } = useSelector(state => state.sessioncour)
 
 
   useEffect(() => {
@@ -138,22 +139,39 @@ const SessioncourRoute = ({ match }) => {
     }
 
     if (isUpdated) {
-      history.push('/sessionscour');
+      history.push('/allsessions');
       alert.success('Sessioncour updated successfully');
       dispatch({ type: UPDATE_SESSIONCOUR_STATUS_RESET })
     }
 
-    if (success) {
-      history.push('/sessionscour');
+    if (newSessioncourSuccess) {
+      history.push('/allsessions');
       alert.success('Sessincour created successfully');
       dispatch({ type: NEW_SESSIONCOUR_RESET })
     }
 
+    if (errorNewSessioncour) {
+      alert.error(errorNewSessioncour);
+      dispatch(clearErrors())
+    }
+
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors())
+    }
+
+    if (isDeleted) {
+        alert.success('Sessioncour deleted successfully');
+        history.push('/allsessions');
+        dispatch({ type: DELETE_SESSIONCOUR_RESET })
+    }
+  }, [dispatch, alert, error, ref, deleteError, isDeleted, newSessioncourSuccess, errorNewSessioncour])
+
+  useEffect(() => {
     groupsCount > 0 && groups.map((gr)=>(
       labelValueGroups.push({value:gr._id,label:gr.name})
     ))
-  }, [dispatch, alert, error, ref])
-
+  },[groupsCount])
   const PostData = ()=>{
     // e.preventDefault()
     let data = { 
@@ -167,7 +185,9 @@ const SessioncourRoute = ({ match }) => {
     dispatch(newSessioncour(data))
     handleClose()
     setRef(ref => ref + 5)
-    
+    setNameSession("")
+    setDescription("")
+    setTypeSession("tp")
   }
 
   const handleClickOpen = () => {
@@ -210,6 +230,10 @@ const SessioncourRoute = ({ match }) => {
     }
   };
 
+  const fDeleteSessioncour = (id) => {
+    dispatch(deleteSessioncour(id));
+  };
+
   var [Displayvalue,getvalue]= useState()
   var getGroupSelected = (e)=>(
     // Array.isArray(e)?e.map(x=>setForGroups.push(x)):[]
@@ -233,10 +257,10 @@ const SessioncourRoute = ({ match }) => {
               startIcon={<AddCircleOutlineOutlinedIcon />}
               onClick={handleClickOpen}
             >
-              Add Sessioncour
+              Add Session
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
-              <DialogTitle id="form-dialog-title">Add Sessioncour</DialogTitle>
+              <DialogTitle id="form-dialog-title">Add a course session</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   <Container>
@@ -261,9 +285,9 @@ const SessioncourRoute = ({ match }) => {
                     <div className="input-field col s12">               
                       <label>Select groups*</label>
                     </div>
-                    {groupsCount > 0 && groups.map((gr)=>(
+                    {/* {groupsCount > 0 && groups.map((gr)=>(
                       labelValueGroups.push({value:gr._id,label:gr.name})
-                    ))}
+                    ))} */}
                     <Select isMulti key={labelValueGroups.value} options={labelValueGroups} onChange={getGroupSelected}></Select>
                     {/* <h5 style={{color:"apricot"}}>{Displayvalue}</h5> */}
                     <FormControl className={classes.field}>
@@ -284,7 +308,7 @@ const SessioncourRoute = ({ match }) => {
                   Cancel
                 </Button>
                 <Button className={classes.btn} onClick={PostData} >
-                  Added
+                  Add
                 </Button>
               </DialogActions>
             </Dialog>
@@ -305,7 +329,7 @@ const SessioncourRoute = ({ match }) => {
                 }   */}
                 {mysessioncoursteacher.sessioncours.map(sessioncour => (
                   <div key={sessioncour._id}>
-                    <SessionCard statusSessioncour ={statusSessioncour} session={sessioncour} />
+                    <SessionCard statusSessioncour ={statusSessioncour} session={sessioncour} fDeleteSessioncour={fDeleteSessioncour}/>
                   </div>
                 ))}
               </Masonry>

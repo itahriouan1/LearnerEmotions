@@ -11,6 +11,10 @@ import {
     UPDATE_SESSIONCOUR_STATUS_REQUEST,
     UPDATE_SESSIONCOUR_STATUS_SUCCESS,
     UPDATE_SESSIONCOUR_STATUS_FAIL,
+    DELETE_SESSIONCOUR_REQUEST,
+    DELETE_SESSIONCOUR_SUCCESS,
+    DELETE_SESSIONCOUR_RESET,
+    DELETE_SESSIONCOUR_FAIL,
     NEW_SESSIONCOUR_REQUEST,
     NEW_SESSIONCOUR_SUCCESS,
     NEW_SESSIONCOUR_FAIL,
@@ -216,6 +220,28 @@ export const getSessionsNoActiveStudentTeacher = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: SESSIONNOACTIVE_STUDENT_TEACHER_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+// Delete sessioncour (Admin,teacher)
+export const deleteSessioncour = (id) => async (dispatch) => {
+    try {
+
+        dispatch({ type: DELETE_SESSIONCOUR_REQUEST })
+
+        const { data } = await axios.delete(`/api/v1/deletesessioncour/${id}`)
+
+        dispatch({
+            type: DELETE_SESSIONCOUR_SUCCESS,
+            payload: data.success
+        })
+
+    } catch (error) {
+        dispatch({
+            type: DELETE_SESSIONCOUR_FAIL,
             payload: error.response.data.message
         })
     }

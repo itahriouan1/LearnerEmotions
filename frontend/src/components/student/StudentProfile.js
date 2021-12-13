@@ -70,11 +70,12 @@ const StuentProfile = ({match}) => {
   const alert = useAlert();
 
   const [session, setSession] = React.useState('');
+  const [tablemultiexp, setTablemultiexp] = React.useState([]);
 
   const { user } = useSelector(state => state.auth)
   const {stuentDetails, error, loading } = useSelector((state) => state.userDetails);
   const {sessioncoursNoActiveStudentTeacher, } = useSelector((state) => state.sessionnoactivestudentteacher);
-  const { sessioncour, expression } = useSelector(state => state.expressionStudent)
+  const { sessioncour, expression, expressiontime} = useSelector(state => state.expressionStudent)
 
 
   const userId = match.params.id;
@@ -87,7 +88,8 @@ const StuentProfile = ({match}) => {
     if(session == ''){
       dispatch({ type: EXPRESSION_STUDENT_RESET })
 
-    }
+    } 
+    
 
     if (error) {
       alert.error(error);
@@ -96,11 +98,25 @@ const StuentProfile = ({match}) => {
 
   }, [dispatch, alert, error,userId])
 
+  useEffect(() => {
+    
+    let t = [ ['x', 'neutral', 'happy', 'sad', 'angry', 'fearful', 'disgusted', 'surprised']];
+    let i = 1;
+    expressiontime && expressiontime.length > 0 ? (
+      expressiontime.map(exp => (
+        t.push([i++,exp.neutral,exp.happy,exp.sad,exp.angry,exp.fearful,exp.disgusted,exp.surprised])
+        // t.push([(exp.dateTimeStartRecording).slice(),exp.neutral,exp.happy,exp.sad,exp.angry,exp.fearful,exp.disgusted,exp.surpriseddd])
+      ))
+    ):(
+      console.log('nn')
+    )
+    setTablemultiexp(t)
+  }, [expressiontime])
+
   const handleChange = (event) => {
     setSession(event.target.value);
     console.log(session)
     dispatch(getExpressionStudent(event.target.value, userId));
-
   };
 
 
@@ -168,7 +184,7 @@ const StuentProfile = ({match}) => {
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Avatar alt="Remy Sharp" 
+                <Avatar 
                   src={stuentDetails && stuentDetails.avatar && stuentDetails.avatar.url}
                   alt={stuentDetails && stuentDetails.name} 
                   className={classes.avatar}
@@ -219,6 +235,8 @@ const StuentProfile = ({match}) => {
                       </Typography>
   
                     ):(
+                      <div>
+
                       <Chart
                         width={'600px'}
                         height={'400px'}
@@ -239,8 +257,29 @@ const StuentProfile = ({match}) => {
                           is3D: true,
                           backgroundColor: '# EE82EE'
                         }}
-                        rootProps={{ 'data-testid': '1' }}
+                        rootProps={{ 'data-testid': '4' }}
                       />
+                      <Chart
+                        width={'600px'}
+                        height={'400px'}
+                        chartType="LineChart"
+                        loader={<div>Loading Chart</div>}
+                        data={tablemultiexp}
+                        options={{
+                          hAxis: {
+                            title: 'Time',
+                          },
+                          vAxis: {
+                            title: 'Expression',
+                          },
+                          series: {
+                            1: { curveType: 'function' },
+                          },
+                        }}
+                        rootProps={{ 'data-testid': '2' }}
+                      />
+                     </div>
+
                     )
                   }
                 </div>

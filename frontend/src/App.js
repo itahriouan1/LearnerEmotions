@@ -89,7 +89,7 @@ function App() {
             <ProtectedRoute path="/student/:id" component={StudentProfile} exact />
             {/* <ProtectedRoute path="/newstudents" component={StudentProfile} exact /> */}
 
-            <ProtectedRoute path="/sessionscour" component={SessioncourRoute} exact />
+            <ProtectedRoute path="/allsessions" component={SessioncourRoute} exact />
             <ProtectedRoute path="/availablesessionsstudent" component={AvailableSessions} exact />
             <ProtectedRoute path="/historySessions" component={HistorySessions} exact />
             <ProtectedRoute path="/historySessionsinfo/:id" component={HistorySessionsinfo} exact />

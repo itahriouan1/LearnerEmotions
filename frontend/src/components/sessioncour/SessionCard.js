@@ -48,7 +48,7 @@ const useStyles = makeStyles({
 })
 
 
-export default function SessionCard({statusSessioncour, session }) {
+export default function SessionCard({statusSessioncour, session , fDeleteSessioncour}) {
   const [createdBy,setCreatedBy] = useState("")
   const createdByy = session.createdBy
 
@@ -58,6 +58,7 @@ export default function SessionCard({statusSessioncour, session }) {
   const classes = useStyles(session)
   const history = useHistory()
 
+  const { user, loading } = useSelector(state => state.auth)
   const { naturesessioncour, error } = useSelector((state) => state.naturesessioncourDetails);
   // const { loading, error: updateError, isUpdated } = useSelector(state => state.sessioncour);
 
@@ -101,7 +102,7 @@ export default function SessionCard({statusSessioncour, session }) {
         <CardHeader
           avatar={
             <Avatar className={classes.avatar}>
-              {session.natureSession}
+              {session.name[0].toUpperCase()+session.name[1]}
             </Avatar>}
           action={
             <IconButton onClick={() => history.push(`/sessioninfo/${session._id}`)}>
@@ -124,6 +125,17 @@ export default function SessionCard({statusSessioncour, session }) {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
+            {user && user.role==="admin" ? (
+              <Typography
+              variant="body1" 
+              color="textSecondary"
+              component="h2"
+              gutterBottom
+              >
+                  By : {user.name}
+              </Typography>
+            ):(
+
             <Typography
                 variant="body1" 
                 color="textSecondary"
@@ -133,6 +145,14 @@ export default function SessionCard({statusSessioncour, session }) {
                 By : {session.natureSession}
             </Typography>
 
+            )}
+            <IconButton
+                className={classes.expand}
+                onClick={() => fDeleteSessioncour(session._id)}
+            >
+              <DeleteOutlined /> 
+                
+            </IconButton>
             <IconButton
                 className={classes.expand}
                 onClick={() => statusSessioncour(session._id, session.status)}

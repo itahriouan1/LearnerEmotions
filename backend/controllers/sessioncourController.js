@@ -313,36 +313,42 @@ exports.endedSessioncoursOfAGroup= catchAsyncErrors(async (req, res, next) => {
 // Delete sessioncour   =>   /api/v1/deletesessioncour
 exports.deleteSessioncour = catchAsyncErrors(async (req, res, next) => {
   // khassni nzid delete nature li tab3a lhad session
-  const sessioncour = await Sessioncour.find({_id : req.body.idSession,status:0});
-  if (sessioncour.length == 0) {
-    success = false
-    message="You cant delete this Sessioncour cz it have expression data"
+  // const sessioncour = await Sessioncour.find({_id : req.params.id,status:0});
+  const expression = await Expression.find({sessioncour:req.params.id})
+  if (expression.length > 0) {
+    return next(new ErrorHandler('You cant delete this Sessioncour cz it have expression data', 404));
+    // success = false
+    // message="You cant delete this Sessioncour cz it have expression data"
   }else{
-    const session = await Sessioncour.findById(req.body.idSession);
+    const session = await Sessioncour.findById(req.params.id);
     await session.remove();
-    success =  true,
-    message = 'Sessioncour is deleted.'
+    // success =  true,
+    // message = 'Sessioncour is deleted.'
+    res.status(200).json({
+      success: true,
+      message: 'Sessioncour is deleted.'
+  })
   }
 
 
-  res.status(200).json({
-      success: success,
-      message: message
-  })
+  // res.status(200).json({
+  //     success: success,
+  //     message: message
+  // })
 
 })
 
 // Update sessioncour  =>  /api/v1/updatesessioncour
-exports.deleteSessioncour = catchAsyncErrors(async (req, res, next) => {
+// exports.deleteSessioncour = catchAsyncErrors(async (req, res, next) => {
 
-  // after creating Expression
+//   // after creating Expression
 
-  res.status(200).json({
-      success: success,
-      message: message
-  })
+//   res.status(200).json({
+//       success: success,
+//       message: message
+//   })
 
-})
+// })
 
 
 // Update Product   =>   /api/v1/admin/product/:id
