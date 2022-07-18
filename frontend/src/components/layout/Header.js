@@ -44,6 +44,7 @@ import { useAlert } from 'react-alert'
 import { logout } from '../../actions/userActions'
 import Loader from '../layout/Loader'
 
+import CardExpressionrecord from '../sessioncour/CardExpressionrecord'
 import Expressionrecord from '../sessioncour/Expressionrecord'
 
 const drawerWidth = 240
@@ -103,7 +104,7 @@ export default function Header({ children }) {
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector(state => state.auth)
-  const { cartItems } = useSelector(state => state.cart)
+  const { cartItems, useridCartItems } = useSelector(state => state.cart)
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -211,8 +212,12 @@ export default function Header({ children }) {
                 </Typography>
                 {user ? ( 
                   <Fragment>
-                    {cartItems.length && (
+                    {cartItems.length && (useridCartItems === user._id) && (
                       <Fragment>
+                        <Container>
+                          {/* <Expressionrecord /> */}
+                        </Container>
+
                         {/* <div  style={{display: 'none'}}>
                           <Expressionrecord />
 
@@ -232,7 +237,7 @@ export default function Header({ children }) {
                           <DialogContent>
                             <DialogContentText>
                               <Container>
-                                <Expressionrecord />
+                                {/* <Expressionrecord /> */}
 
                               </Container>
                             </DialogContentText>

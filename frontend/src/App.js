@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, createContext, useMemo, useState } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+
+
 
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
@@ -60,6 +62,7 @@ const theme = createTheme({
   }
 })
 
+export const StreamContext = createContext() 
 
 function App() {
 
@@ -70,47 +73,49 @@ function App() {
 
   const { user, isAuthenticated, loading } = useSelector(state => state.auth)
 
+  
+
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-          <Header>
-            <Route path="/" component={About} exact />
-            <Route path="/login" component={Login} />
-            <ProtectedRoute path="/me" component={Profile} exact />
-            <ProtectedRoute path="/me/update" component={UpdateProfile} exact />
-            <ProtectedRoute path="/password/update" component={UpdatePassword} exact />
-            <Route path="/password/forgot" component={ForgotPassword} exact />
-            <Route path="/password/reset/:token" component={NewPassword} exact />
+      <ThemeProvider theme={theme}>
+        <Router>
+            <Header>
+              <Route path="/" component={About} exact />
+              <Route path="/login" component={Login} />
+              <ProtectedRoute path="/me" component={Profile} exact />
+              <ProtectedRoute path="/me/update" component={UpdateProfile} exact />
+              <ProtectedRoute path="/password/update" component={UpdatePassword} exact />
+              <Route path="/password/forgot" component={ForgotPassword} exact />
+              <Route path="/password/reset/:token" component={NewPassword} exact />
 
-            <ProtectedRoute path="/groups" component={GroupRoute} exact />
-            <ProtectedRoute path="/group/:id" component={GroupDetails} exact />
-            <ProtectedRoute path="/creategroup" component={CreateGroup} exact />
+              <ProtectedRoute path="/groups" component={GroupRoute} exact />
+              <ProtectedRoute path="/group/:id" component={GroupDetails} exact />
+              <ProtectedRoute path="/creategroup" component={CreateGroup} exact />
 
-            <ProtectedRoute path="/student/:id" component={StudentProfile} exact />
-            {/* <ProtectedRoute path="/newstudents" component={StudentProfile} exact /> */}
+              <ProtectedRoute path="/student/:id" component={StudentProfile} exact />
+              {/* <ProtectedRoute path="/newstudents" component={StudentProfile} exact /> */}
 
-            <ProtectedRoute path="/allsessions" component={SessioncourRoute} exact />
-            <ProtectedRoute path="/availablesessionsstudent" component={AvailableSessions} exact />
-            <ProtectedRoute path="/historySessions" component={HistorySessions} exact />
-            <ProtectedRoute path="/historySessionsinfo/:id" component={HistorySessionsinfo} exact />
-            <ProtectedRoute path="/sessioninfo/:id" component={Sessioncourinfo} exact />
+              <ProtectedRoute path="/allsessions" component={SessioncourRoute} exact />
+              <ProtectedRoute path="/availablesessionsstudent" component={AvailableSessions} exact />
+              <ProtectedRoute path="/historySessions" component={HistorySessions} exact />
+              <ProtectedRoute path="/historySessionsinfo/:id" component={HistorySessionsinfo} exact />
+              <ProtectedRoute path="/sessioninfo/:id" component={Sessioncourinfo} exact />
 
-            <ProtectedRoute path="/expressionrecord/:id" component={Expressionrecord} exact />
+              <ProtectedRoute path="/expressionrecord/:id" component={Expressionrecord} exact />
 
-            <ProtectedRoute path="/dashboard" component={DashboardRoute} exact />
-            <ProtectedRoute path="/addadmin" component={Register} exact />
-
-
-            
+              <ProtectedRoute path="/dashboard" component={DashboardRoute} exact />
+              <ProtectedRoute path="/addadmin" component={Register} exact />
 
 
-          </Header>
+              
 
-          {!loading && (!isAuthenticated || user.role !== 'admin') && (
-            <Footer />
-          )}
-      </Router>
-    </ThemeProvider>
+
+            </Header>
+
+            {!loading && (!isAuthenticated || user.role !== 'admin') && (
+              <Footer />
+            )}
+        </Router>
+      </ThemeProvider>
   );
 }
 
