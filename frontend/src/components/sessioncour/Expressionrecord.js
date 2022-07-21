@@ -104,14 +104,13 @@ const Expressionrecord = ({ match, history }) => {
     let intervalSendExpression = null;
     if (playing) {
       // addToCart();
-      // if(match ){
-      // 	dispatch(addItemToCart(match.params.id, user._id));
-      // 	alert.success('Item Added to Cart');
-      // }else{
-      // 	dispatch(addItemToCart(cartItems, useridCartItems));
-      // 	alert.success('Item Added to Cart');
-
-      // }
+      if (match) {
+        dispatch(addItemToCart(match.params.id, user._id));
+        alert.success("Item Added to Cart");
+      } else {
+        dispatch(addItemToCart(cartItems, useridCartItems));
+        alert.success("Item Added to Cart");
+      }
       console.log("videoRef.current", videoRef.current);
       // if (!videoSource.getSource()){
       navigator.mediaDevices.getUserMedia({ video: {} }).then(
@@ -143,6 +142,7 @@ const Expressionrecord = ({ match, history }) => {
           // setTime(prevTime => prevTime + 1)
           time.current = time.current + 1;
           // console.log('time.current ', time.current)
+          console.log("videoRef.current", videoRef.current);
           canvasRef.current.innerHTML = await faceapi.createCanvasFromMedia(
             videoRef.current
           );
