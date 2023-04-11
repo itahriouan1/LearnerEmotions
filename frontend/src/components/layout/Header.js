@@ -222,7 +222,7 @@ export default function Header({ children }) {
                 </Typography>
                 {user ? (
                   <Fragment>
-                    {cartItems.length && useridCartItems === user._id && (
+                    {cartItems.length > 0 && useridCartItems === user._id && (
                       <Fragment>
                         {/* <Container><Expressionrecord /></Container> */}
 
