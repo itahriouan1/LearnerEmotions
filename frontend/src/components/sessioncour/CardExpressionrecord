@@ -6,34 +6,23 @@ import "../../App.css";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  startExpression,
-  sendExpression,
-  clearErrors,
-} from "../../actions/expressionActions";
-import { addItemToCart, removeItemFromCart } from "../../actions/cartActions";
+import { sendExpression } from "../../actions/expressionActions";
+import { addItemToCart } from "../../actions/cartActions";
 
 import { videoSource } from "../../streamManager";
 
-const Expressionrecord = ({ match, history }) => {
+const Expressionrecord = ({ match }) => {
   const { user } = useSelector((state) => state.auth);
   const { cartItems, useridCartItems } = useSelector((state) => state.cart);
   const [matchParamsId, setMatchParamsId] = useState("");
 
   const [playing, setPlaying] = useState(true);
-  const [stoprecord, setStoprecord] = useState(false);
-
-  const [createdBy, setCreatedBy] = useState("");
 
   const HEIGHT = 500;
   const WIDTH = 500;
-  const videoHeight = 500;
-  const videoWidth = 500;
 
   // const [time, setTime] = useState(0);
   const time = useRef(0);
-
-  const [timerOn, setTimeOn] = useState(false);
 
   const [initializing, setInitializing] = useState(false);
   const videoRef = useRef();
@@ -55,21 +44,12 @@ const Expressionrecord = ({ match, history }) => {
   const disgustedd = useRef(0);
   const surprisedd = useRef(0);
 
-  const [dataexpressions, setDataexpressions] = useState({});
-
-  let dataexpression;
-
   // const [matchParamsId, setMatchParamsId] = useState(match.params.id);
 
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const [idExpression, setIdExpression] = useState();
-
   // const { success, errorstartexpresion = error } = useSelector(state => state.startExpression)
-  const { loading, expressionUpdated, error } = useSelector(
-    (state) => state.sendExpression
-  );
 
   useEffect(() => {
     const loadModels = async () => {
@@ -402,45 +382,6 @@ const Expressionrecord = ({ match, history }) => {
       clearInterval(intervalSendExpression);
     };
   }, []);
-
-  const startTheExpression = (id) => {
-    // dispatch(startExpression(id));
-    // setRef(ref => ref + 5)
-  };
-
-  const addToCart = () => {
-    dispatch(addItemToCart(matchParamsId));
-    alert.success("Item Added to Cart");
-  };
-
-  const removeCartItemHandler = (id, useridCartItems) => {
-    dispatch(removeItemFromCart(id, useridCartItems));
-
-    // if(match ){
-    // 	console.log('match.params')
-    // 	console.log(match.params)
-    // 	// removeCartItemHandler(match.params.id);
-    // 	dispatch(removeItemFromCart(match.params.id))
-
-    // }else{
-    // 	console.log('cartItems')
-    // 	console.log(cartItems)
-    // 	// removeCartItemHandler(cartItems);
-    // 	dispatch(removeItemFromCart(cartItems))
-
-    // }
-    // // removeCartItemHandler();
-    // clearInterval(interval)
-    // console.log('ffff',typeof clearInterval(interval))
-    // clearInterval(intervalSendExpression)
-    // // const a = ()=> clearInterval(intervalSendExpression)
-    // console.log('jj')
-    // let video = document.getElementsByClassName('app__videoFeed')[0];
-    // if(videoRef.current.srcObject){
-    // 	videoRef.current.srcObject.getTracks()[0].stop()
-    // }
-    // history.push('/availablesessionsstudent')
-  };
 
   return (
     <div className="app">
