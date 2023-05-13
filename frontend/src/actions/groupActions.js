@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 import {
   ALL_GROUPS_REQUEST,
@@ -23,123 +23,122 @@ import {
   GROUP_DETAILS_REQUEST,
   GROUP_DETAILS_SUCCESS,
   GROUP_DETAILS_FAIL,
-  CLEAR_ERRORS
-} from '../constants/groupConstants'
+  CLEAR_ERRORS,
+} from "../constants/groupConstants";
 
 export const getGroups = () => async (dispatch) => {
-    try {
+  try {
+    dispatch({ type: ALL_GROUPS_REQUEST });
 
-        dispatch({ type: ALL_GROUPS_REQUEST })
+    let link = `https://express-app-8vc2.onrender.com/api/v1/mygroupscreated`;
 
-        let link = `/api/v1/mygroupscreated`
+    const { data } = await axios.get(link);
 
-        const { data } = await axios.get(link)
-
-        dispatch({
-            type: ALL_GROUPS_SUCCESS,
-            payload: data
-        })
-
-    } catch (error) {
-        dispatch({
-            type: ALL_GROUPS_FAIL,
-            payload: error.response.data.message
-        })
-    }
-}
-
+    dispatch({
+      type: ALL_GROUPS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_GROUPS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 export const getGroupDetails = (id) => async (dispatch) => {
-    try {
+  try {
+    dispatch({ type: GROUP_DETAILS_REQUEST });
 
-        dispatch({ type: GROUP_DETAILS_REQUEST })
+    const { data } = await axios.get(
+      `https://express-app-8vc2.onrender.com/api/v1/group/${id}`
+    );
 
-        const { data } = await axios.get(`/api/v1/group/${id}`)
-
-        dispatch({
-            type: GROUP_DETAILS_SUCCESS,
-            payload: data.group
-        })
-
-    } catch (error) {
-        dispatch({
-            type: GROUP_DETAILS_FAIL,
-            payload: error.response.data.message
-        })
-    }
-}
+    dispatch({
+      type: GROUP_DETAILS_SUCCESS,
+      payload: data.group,
+    });
+  } catch (error) {
+    dispatch({
+      type: GROUP_DETAILS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 export const newGroup = (a) => async (dispatch) => {
-    try {
+  try {
+    dispatch({ type: NEW_GROUP_REQUEST });
 
-        dispatch({ type: NEW_GROUP_REQUEST })
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
+    const { data } = await axios.post(
+      `https://express-app-8vc2.onrender.com/api/v1/group/new`,
+      a,
+      config
+    );
 
-        const { data } = await axios.post(`/api/v1/group/new`, a, config)
+    dispatch({
+      type: NEW_GROUP_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: NEW_GROUP_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
-        dispatch({
-            type: NEW_GROUP_SUCCESS,
-            payload: data
-        })
-
-    } catch (error) {
-        dispatch({
-            type: NEW_GROUP_FAIL,
-            payload: error.response.data.message
-        })
-    }
-}
-
-// Delete group 
+// Delete group
 export const deleteGroup = (id) => async (dispatch) => {
-    try {
+  try {
+    dispatch({ type: DELETE_GROUP_REQUEST });
 
-        dispatch({ type: DELETE_GROUP_REQUEST })
+    const { data } = await axios.delete(
+      `https://express-app-8vc2.onrender.com/api/v1/group/${id}`
+    );
 
-        const { data } = await axios.delete(`/api/v1/group/${id}`)
+    dispatch({
+      type: DELETE_GROUP_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_GROUP_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
-        dispatch({
-            type: DELETE_GROUP_SUCCESS,
-            payload: data.success
-        })
+// Delete student from group
+export const deleteGroupStudent = (idgroup, idstudent) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_GROUP_STUDENT_REQUEST });
 
-    } catch (error) {
-        dispatch({
-            type: DELETE_GROUP_FAIL,
-            payload: error.response.data.message
-        })
-    }
-}
+    const { data } = await axios.delete(
+      `https://express-app-8vc2.onrender.com/api/v1/group/deletestudent/${idgroup}/${idstudent}`
+    );
 
-// Delete student from group 
-export const deleteGroupStudent = (idgroup,idstudent) => async (dispatch) => {
-    try {
-
-        dispatch({ type: DELETE_GROUP_STUDENT_REQUEST })
-
-        const { data } = await axios.delete(`/api/v1/group/deletestudent/${idgroup}/${idstudent}`)
-
-        dispatch({
-            type: DELETE_GROUP_STUDENT_SUCCESS,
-            payload: data.success
-        })
-
-    } catch (error) {
-        dispatch({
-            type: DELETE_GROUP_STUDENT_FAIL,
-            payload: error.response.data.message
-        })
-    }
-}
+    dispatch({
+      type: DELETE_GROUP_STUDENT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_GROUP_STUDENT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
-    dispatch({
-        type: CLEAR_ERRORS
-    })
-}
+  dispatch({
+    type: CLEAR_ERRORS,
+  });
+};

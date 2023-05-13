@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 import {
   START_EXPRESSION_REQUEST,
@@ -10,83 +10,81 @@ import {
   EXPRESSION_STUDENT_REQUEST,
   EXPRESSION_STUDENT_SUCCESS,
   EXPRESSION_STUDENT_FAIL,
-  CLEAR_ERRORS
-} from '../constants/expressionConstants'
+  CLEAR_ERRORS,
+} from "../constants/expressionConstants";
 
 export const startExpression = (id) => async (dispatch) => {
   try {
+    dispatch({ type: START_EXPRESSION_REQUEST });
 
-    dispatch({ type: START_EXPRESSION_REQUEST })
+    let link = `https://express-app-8vc2.onrender.com/api/v1/startexpression/${id}`;
 
-    let link = `/api/v1/startexpression/${id}`
-
-    const { data } = await axios.get(link)
+    const { data } = await axios.get(link);
 
     dispatch({
       type: START_EXPRESSION_SUCCESS,
-      payload: data
-    })
-
+      payload: data,
+    });
   } catch (error) {
     dispatch({
-        type: START_EXPRESSION_FAIL,
-        payload: error.response.data.message
-    })
+      type: START_EXPRESSION_FAIL,
+      payload: error.response.data.message,
+    });
   }
-}
+};
 // Update SessionCours Status (ADMIN - TEACHER)
 export const sendExpression = (dataexpression) => async (dispatch) => {
   try {
-
-    dispatch({ type: UPDATE_EXPRESSION_REQUEST })
+    dispatch({ type: UPDATE_EXPRESSION_REQUEST });
 
     const config = {
       headers: {
-          'Content-Type': 'application/json'
-      }
-    }
+        "Content-Type": "application/json",
+      },
+    };
 
-    const { data } = await axios.put(`/api/v1/sessioncour/sendexpression`, dataexpression, config)
+    const { data } = await axios.put(
+      `https://express-app-8vc2.onrender.com/api/v1/sessioncour/sendexpression`,
+      dataexpression,
+      config
+    );
 
     dispatch({
       type: UPDATE_EXPRESSION_SUCCESS,
-      payload: data.success
-    })
-
+      payload: data.success,
+    });
   } catch (error) {
     dispatch({
-        type: UPDATE_EXPRESSION_FAIL,
-        payload: error.response.data.message
-    })
+      type: UPDATE_EXPRESSION_FAIL,
+      payload: error.response.data.message,
+    });
   }
-}
+};
 
 // Get ExpressionStudent Student
-export const getExpressionStudent = (id,studentid) => async (dispatch) => {
+export const getExpressionStudent = (id, studentid) => async (dispatch) => {
   try {
+    dispatch({ type: EXPRESSION_STUDENT_REQUEST });
 
-      dispatch({ type: EXPRESSION_STUDENT_REQUEST })
+    let link = `https://express-app-8vc2.onrender.com/api/v1/expressionsessionstudent/${id}/${studentid}`;
 
-      let link = `/api/v1/expressionsessionstudent/${id}/${studentid}`
+    const { data } = await axios.get(link);
 
-      const { data } = await axios.get(link)
-
-      dispatch({
-          type: EXPRESSION_STUDENT_SUCCESS,
-          payload: data
-      })
-
+    dispatch({
+      type: EXPRESSION_STUDENT_SUCCESS,
+      payload: data,
+    });
   } catch (error) {
-      dispatch({
-          type: EXPRESSION_STUDENT_FAIL,
-          payload: error.response.data.message
-      })
+    dispatch({
+      type: EXPRESSION_STUDENT_FAIL,
+      payload: error.response.data.message,
+    });
   }
-}
+};
 
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
-    dispatch({
-        type: CLEAR_ERRORS
-    })
-}
+  dispatch({
+    type: CLEAR_ERRORS,
+  });
+};

@@ -1,35 +1,35 @@
-import axios from 'axios';
+import axios from "axios";
 
 import {
   NATURESESSIONCOUR_DETAILS_REQUEST,
   NATURESESSIONCOUR_DETAILS_SUCCESS,
   NATURESESSIONCOUR_DETAILS_FAIL,
-  CLEAR_ERRORS
-} from '../constants/naturesessioncourConstants'
+  CLEAR_ERRORS,
+} from "../constants/naturesessioncourConstants";
 
 export const getNaturesessioncour = (id) => async (dispatch) => {
-    try {
+  try {
+    dispatch({ type: NATURESESSIONCOUR_DETAILS_REQUEST });
 
-        dispatch({ type: NATURESESSIONCOUR_DETAILS_REQUEST })
+    const { data } = await axios.get(
+      `https://express-app-8vc2.onrender.com/api/v1/naturesessioncour/${id}`
+    );
 
-        const { data } = await axios.get(`/api/v1/naturesessioncour/${id}`)
-
-        dispatch({
-            type: NATURESESSIONCOUR_DETAILS_SUCCESS,
-            payload: data.naturesessioncour
-        })
-
-    } catch (error) {
-        dispatch({
-            type: NATURESESSIONCOUR_DETAILS_FAIL,
-            payload: error.response.data.message
-        })
-    }
-}
+    dispatch({
+      type: NATURESESSIONCOUR_DETAILS_SUCCESS,
+      payload: data.naturesessioncour,
+    });
+  } catch (error) {
+    dispatch({
+      type: NATURESESSIONCOUR_DETAILS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
-    dispatch({
-        type: CLEAR_ERRORS
-    })
-}
+  dispatch({
+    type: CLEAR_ERRORS,
+  });
+};
