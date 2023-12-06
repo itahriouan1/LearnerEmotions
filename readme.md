@@ -36,4 +36,84 @@ LearnerEmotions is a web application that can run on students’ computers and a
 4. In the beginning of the real session, student enter to this specific session and accept the access to the camera.
 5. The student can visualize his detected emotions in real time (figure 1) on his displayed video and also in the form of charts.
 
+# How to setup
+## Configuration
 
+1. Create a MongoDB database and email account specific to the application.
+
+2. Add environment variables to the config.env File in the following location:
+
+> \backend\config\config.env
+
+This is an example of the .env file that uses cloudinary cloud as a host and mailtrap as smtp server:
+
+> PORT = 4000
+> NODE_ENEV = DEVELOPMENT
+
+> DB_LOCAL_URI = mongodb+srv://user:password@host/DB-Expressions
+> DB_URI = mongodb+srv://user:password@host/DB-Expressions
+
+> JWT_SECRET = {secret key for secured exchange}
+> JWT_EXPIRES_TIME = 7d
+> COOKIE_EXPIRES_TIME = 7
+
+> CLOUDINARY_CLOUD_NAME = {CLOUDINARY_CLOUD_NAME}
+> CLOUDINARY_API_KEY = {CLOUDINARY_API_KEY}
+> CLOUDINARY_API_SECRET = {CLOUDINARY_API_SECRET}
+
+> SMTP_HOST = smtp.mailtrap.io
+> SMTP_PORT = 2525
+> SMTP_EMAIL = {SMTP_EMAIL}
+> SMTP_PASSWORD = {SMTP_PASSWORD}
+> SMTP_FROM_EMAIL = {email to use}
+> SMTP_FROM_NAME = Expression App
+
+## Project Setup
+
+### Backend
+
+1. Navigate to the backend directory:
+
+   ```bash
+   cd backend
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+3. Run the backend server in development mode:
+   ```bash
+   npm run dev
+   ```
+
+### Frontend
+
+1. Navigate to the frontend directory:
+
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Run the frontend server with nodemon:
+   ```bash
+   nodemon start
+   ```
+
+## Project Information
+
+### Node.js Version
+
+This project is developed and tested with Node.js version 16.13.0. Please ensure you have this version of Node.js installed before running the project.
+
+To check your Node.js version, you can run:
+
+```bash
+node -v
+```
